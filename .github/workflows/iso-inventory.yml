@@ -1,0 +1,28 @@
+name: Portable ISO Inventory
+on:
+  push:
+    paths:
+      - 'tools/iso-inventory/**'
+      - '.github/workflows/iso-inventory.yml'
+  pull_request:
+    paths:
+      - 'tools/iso-inventory/**'
+      - '.github/workflows/iso-inventory.yml'
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  portable:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: '8.0.x'
+      - run: dotnet test tools/iso-inventory/tests/Inventory.Tests/Inventory.Tests.csproj -c Release
+      - run: dotnet publish tools/iso-inventory/src/Inventory.App/Inventory.App.csproj -c Release -r win-x64 -o artifacts/iso-inventory
+      - uses: actions/upload-artifact@v4
+        with:
+          name: ISOInventory-win-x64
+          path: artifacts/iso-inventory/ISOInventory.exe
+          if-no-files-found: error
