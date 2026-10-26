@@ -1,7 +1,7 @@
-# ISO Inventory 0.2.0 — catálogo com seleção
+# ISO Inventory 0.3.0 — catálogo com seleção
 
 Executável portátil para Windows 10/11 x64, com runtime .NET incluído.
-Abra releases/ISOInventory-0.2.0-win-x64.exe. A elevação de administrador é
+Abra releases/ISOInventory-0.3.0-win-x64.exe. A elevação de administrador é
 necessária para as montagens e consultas offline do Windows.
 
 ## Usar
@@ -25,10 +25,11 @@ completo é pesquisável e exportável, mesmo com grupos ainda fechados.
 ## Conteúdo identificado
 
 - Componentes integrados: Defender Antivirus, Segurança do Windows, Edge,
-  WebView2, WinRE e instalador do OneDrive, quando há evidências na imagem.
+  WebView2, Firewall, BFE, WinRE e instalador do OneDrive, quando há evidências na imagem.
 - Aplicativos AppX/MSIX e do sistema por manifesto; provisionamento via DISM.
 - Programas tradicionais registrados no HKLM offline de 32/64 bits.
-- Todos os registros de serviços e drivers no ControlSet selecionado.
+- Registros de serviços e drivers de todos os ControlSets reais; o principal
+  tem precedência e os detalhes mostram a origem de cada registro.
 - Pacotes de drivers pelo DISM /Get-Drivers /All e pelos INF em Windows/INF.
 - Recursos opcionais e capabilities pelas consultas do DISM.
 - Pacotes CBS: inventário DISM e fallback dos manifestos em servicing/Packages.
@@ -52,9 +53,11 @@ catálogo de componentes. O relatório usa schema 2, com Catalog e seleção.
 
 ISO é montada somente para leitura; WIM usa /ReadOnly e desmonta com /Discard.
 ESD é exportado para um WIM temporário e pode exigir vários GB no TEMP. Somente
-as montagens criadas pelo app são liberadas. Hives são copiados para TEMP e
-somente essas cópias são abertas com KEY_READ, sem carregar o HKLM do computador.
-Links/junções internos não são seguidos. Comandos encontrados na imagem não são
+as montagens criadas pelo app são liberadas. Hives SYSTEM/SOFTWARE são lidos diretamente por um parser gerenciado em modo
+somente leitura. No Windows, a API nativa em cópias temporárias é uma alternativa
+quando faltam os serviços ou os metadados da versão, sem carregar o HKLM do computador.
+Links/junções internos não são seguidos; arquivos comprimidos WOF/WIM não são
+confundidos com links. Comandos encontrados na imagem não são
 executados. Falhas de desmontagem preservam a pasta e registram seu caminho.
 
 Este catálogo não reproduz o grafo proprietário de dependências/remoção do
@@ -74,9 +77,28 @@ Cancelamento aguarda operações nativas de montagem em andamento antes da limpe
     dotnet publish tools/iso-inventory/src/Inventory.App/Inventory.App.csproj -c Release -r win-x64 -o artifacts/iso-inventory
     dotnet run --project tools/iso-inventory/tests/VerifyAppStartup -- tools/iso-inventory/src/Inventory.App/bin/Release/net8.0-windows/win-x64/ISOInventory.dll
 
-Os testes portáteis cobrem dados reais de fixture, leitura sem alterar a entrada,
+Os 59 testes portáteis cobrem hives REGF binários, múltiplos ControlSets,
+valores expansíveis, dependências e preservação da entrada, além de leitura sem alterar a entrada,
 resolução de caminhos, XML, inventários DISM, detecção de integrados, catálogo,
 WinSxS, versões e precedência de estados. O verificador inspeciona o STAThread
 no ponto de entrada compilado. A versão é cross-published em Linux para Windows;
 a árvore interativa e as consultas nativas precisam de confirmação em Windows.
 O executável é experimental e não assinado.
+
+## Comparação com o preset fornecido
+
+O grupo “Preset NTLite — referência” contém os 372 identificadores distintos de
+RemoveComponents do XML fornecido pelo usuário. Ele fica separado dos itens
+efetivamente identificados na imagem. A comparação usa serviços, aplicativos e
+algumas assinaturas de arquivos; evidência parcial recebe esse rótulo, e falta de
+correspondência aparece como NÃO VERIFICADO, sem afirmar ausência.
+
+O executável NTLite foi apenas inspecionado estaticamente. Essa inspeção não
+forneceu um catálogo completo de regras. Nenhum código ou recurso de interface
+do executável foi incorporado. Somente IDs e nomes de RemoveComponents foram
+extraídos do preset; outras configurações do XML não foram importadas.
+
+Se a leitura de serviços falhar, o grupo permanece visível com diagnóstico,
+e o log registra leitor usado, ControlSets e erros. Esta versão ainda precisa
+de validação com a imagem real no Windows. A dependência DiscUtils usa licença
+MIT; veja THIRD-PARTY-NOTICES.txt.

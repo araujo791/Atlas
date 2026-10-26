@@ -13,6 +13,7 @@ public sealed class InventoryReport
     public List<FileItem> Files { get; set; } = new();
     public List<ComponentItem> Components { get; set; } = new();
     public List<CatalogItem> Catalog { get; set; } = new();
+    public List<CatalogItem> PresetReferences { get; set; } = new();
     public string SelectionIntent { get; set; } = "Futura remoção (planejamento)";
     public List<string> SelectedCatalogIds { get; set; } = new();
     public List<string> Warnings { get; set; } = new();
@@ -46,6 +47,8 @@ public sealed class ServiceItem
     public string Account { get; set; } = "";
     public string Description { get; set; } = "";
     public int Type { get; set; }
+    public List<string> ControlSets { get; set; } = new();
+    public bool IsPrimaryControlSet { get; set; } = true;
     public List<string> Dependencies { get; set; } = new();
 }
 
@@ -74,6 +77,7 @@ public sealed class CatalogItem
     public string Name { get; set; } = "";
     public string State { get; set; } = "";
     public string Details { get; set; } = "";
+    public bool IsReference { get; set; }
 }
 
 public sealed class RegistrySnapshot

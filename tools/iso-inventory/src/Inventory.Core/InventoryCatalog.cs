@@ -37,6 +37,12 @@ public static class InventoryCatalog
             @"Windows\System32\SecurityHealthService.exe",
             @"Windows\SystemApps\Microsoft.Windows.SecHealthUI_cw5n1h2txyewy"
         }, new[] { "SecurityHealthService", "wscsvc" });
+        Builtin("firewall", "Firewall do Windows", new[] {
+            @"Windows\System32\mpssvc.dll", @"Windows\System32\FirewallAPI.dll"
+        }, new[] { "MpsSvc", "BFE", "mpsdrv" });
+        Builtin("bfe", "Mecanismo de Filtragem Básica (BFE)", new[] {
+            @"Windows\System32\bfe.dll"
+        }, new[] { "BFE" });
         Builtin("edge", "Microsoft Edge", new[] {
             @"Program Files (x86)\Microsoft\Edge\Application\msedge.exe",
             @"Program Files\Microsoft\Edge\Application\msedge.exe",
@@ -148,11 +154,12 @@ public static class InventoryCatalog
         foreach (var service in report.Services)
             items.Add(new() {
                 Id = "service:" + service.Name, Category = (service.Type & 3) != 0 ? "Drivers (serviços)" : "Serviços",
-                Name = service.DisplayName.Length != 0 && !service.DisplayName.StartsWith('@') ?
-                    service.DisplayName + " (" + service.Name + ")" : service.Name, State = service.Start,
+                Name = PresetReference.FriendlyServiceName(service), State = service.Start,
                 Details = service.DisplayName + "\r\n" + service.Description +
                     "\r\nImagePath: " + service.ImagePath + "\r\nServiceDll: " + service.ServiceDll +
-                    "\r\nConta: " + service.Account + "\r\nDependências: " + string.Join(", ", service.Dependencies)
+                    "\r\nConta: " + service.Account + "\r\nControlSets: " + string.Join(", ", service.ControlSets) +
+                    "\r\nControlSet de inicialização: " + service.IsPrimaryControlSet +
+                    "\r\nDependências: " + string.Join(", ", service.Dependencies)
             });
         // Native DISM state takes precedence over a filesystem manifest fallback.
         foreach (var component in report.Components.GroupBy(c => c.Kind + "\0" + c.Name, StringComparer.OrdinalIgnoreCase)
@@ -161,6 +168,7 @@ public static class InventoryCatalog
                 Id = "component:" + component.Kind + ":" + component.Name, Category = component.Kind,
                 Name = component.Name, State = component.State, Details = component.Details
             });
+        items.AddRange(report.PresetReferences);
         return items.GroupBy(item => item.Id, StringComparer.OrdinalIgnoreCase).Select(group => group.Last())
             .OrderBy(item => item.Category, StringComparer.OrdinalIgnoreCase)
             .ThenBy(item => item.Name, StringComparer.OrdinalIgnoreCase).ToList();

@@ -33,7 +33,7 @@ public sealed class MainForm : Form
 
     public MainForm()
     {
-        Text = "ISO Inventory 0.2.0 — componentes da imagem";
+        Text = "ISO Inventory 0.3.0 — componentes da imagem";
         Width = 1280; Height = 820; MinimumSize = new(850, 550);
         StartPosition = FormStartPosition.CenterScreen;
         Font = new Font("Segoe UI", 9);
@@ -79,6 +79,7 @@ public sealed class MainForm : Form
                 details.Text = item.Name + Environment.NewLine + item.Category + Environment.NewLine +
                     "Estado: " + item.State + Environment.NewLine + Environment.NewLine + item.Details +
                     Environment.NewLine + Environment.NewLine + "Marcação: planejamento de futura remoção.";
+            else if (e.Node?.Tag is string diagnostic) details.Text = diagnostic;
             else if (e.Node?.Tag is CatalogGroup group)
                 details.Text = group.Name + Environment.NewLine + group.Items.Count +
                     " itens. Expandir carrega a lista; marcar o grupo seleciona os itens deste grupo/filtro.";
@@ -117,7 +118,7 @@ public sealed class MainForm : Form
         };
         FormClosed += (_, _) => { filterTimer.Dispose(); cancellation?.Dispose(); };
         WindowsImageSession.CommandLog = log.Write;
-        log.Write("ISO Inventory 0.2.0 iniciado; apartment=" + Thread.CurrentThread.GetApartmentState());
+        log.Write("ISO Inventory 0.3.0 iniciado; apartment=" + Thread.CurrentThread.GetApartmentState());
     }
 
     private void SetBusy(bool value)
@@ -201,8 +202,11 @@ public sealed class MainForm : Form
             var input = source.Text;
             session = await Task.Run(() => WindowsImageSession.Open(input, edition.Index, token, progress), token);
             var root = session.ImageRoot;
-            progress.Report("Lendo cópias temporárias dos hives offline...");
+            progress.Report("Lendo SOFTWARE e SYSTEM em modo direto...");
             var registry = await Task.Run(() => OfflineRegistry.Read(root, token), token);
+            log.Write("Registro offline: " + registry.Services.Count + " serviços; ControlSets: " +
+                registry.Windows.GetValueOrDefault("ControlSetsFound", "não identificados"));
+            foreach (var warning in registry.Warnings.Take(100)) log.Write("Registro: " + warning);
             result = await Task.Run(() =>
             {
                 var inventory = ImageScanner.Scan(root, registry, token, progress, includeFileInventory: false);
@@ -219,6 +223,9 @@ public sealed class MainForm : Form
                 else result.Applications.Add(provisioned);
             }
             result.Applications = result.Applications.OrderBy(app => app.Name, StringComparer.OrdinalIgnoreCase).ToList();
+            progress.Report("Comparando os 372 itens do preset NTLite com a imagem...");
+            var catalogReport = result;
+            result.PresetReferences = await Task.Run(() => PresetReference.Build(root, catalogReport), token);
             result.CollectionStatus = "Coleta finalizada; consulte limites e avisos.";
             finished = true;
         }
@@ -252,10 +259,10 @@ public sealed class MainForm : Form
                 if (report.WarningCount > report.Warnings.Count)
                     warnings.AppendText(Environment.NewLine + "Avisos omitidos: " + (report.WarningCount - report.Warnings.Count));
                 selected.Clear(); report.Catalog = InventoryCatalog.Build(report);
-                report.Limits = "Catálogo do conteúdo identificado na imagem. Marcar planeja futura remoção e salva a escolha no JSON. A presença não garante que o recurso esteja ativo ou seja removível. Instalações posteriores por scripts/downloads não são determinadas por completo.";
+                report.Limits = "O grupo Preset NTLite é referência de comparação: NÃO VERIFICADO não significa instalado nem ausente. Catálogo do conteúdo identificado na imagem. Marcar planeja futura remoção e salva a escolha no JSON. A presença não garante que o recurso esteja ativo ou seja removível. Instalações posteriores por scripts/downloads não são determinadas por completo.";
                 search.Clear(); if (finished) tabs.SelectedIndex = 0; RefreshGrid();
-                status.Text = (finished ? "Coleta finalizada: " : "Inventário parcial: ") +
-                    $"{report.Applications.Count} aplicativos, {report.Services.Count} serviços/drivers, {report.Catalog.Count} itens no catálogo. Consulte os avisos.";
+                status.Text = (report.Services.Count == 0 ? "Coleta parcial (SYSTEM sem serviços): " : finished ? "Coleta finalizada: " : "Inventário parcial: ") +
+                    $"{report.Applications.Count} aplicativos, {report.Services.Count} serviços/drivers, {report.Catalog.Count(item => !item.IsReference)} itens inventariados e {report.PresetReferences.Count} referências do preset. Consulte os avisos.";
                 log.Write(status.Text);
             }
             else status.Text = token.IsCancellationRequested ? "Cancelado. Consulte os avisos de limpeza." : "Análise não concluída. Consulte os avisos.";
@@ -290,6 +297,10 @@ public sealed class MainForm : Form
                 catalogTree.Nodes.Add(GroupNode(group.Key, group.ToList()));
             foreach (TreeNode node in catalogTree.Nodes)
                 if (((CatalogGroup)node.Tag!).Name == "Componentes integrados") node.Expand();
+            if (query.Length == 0 && report.Services.Count == 0)
+                catalogTree.Nodes.Insert(0, new TreeNode("Serviços — leitura indisponível; consulte Avisos e Abrir log") {
+                    Tag = "Nenhum serviço foi lido do SYSTEM. A imagem pode conter serviços; veja os avisos de coleta."
+                });
         }
         finally { catalogTree.EndUpdate(); updatingTree = false; }
         UpdateCount(matches.Count);
@@ -336,7 +347,10 @@ public sealed class MainForm : Form
         else if (node.Tag is CatalogGroup group)
             foreach (var entry in group.Items)
                 if (node.Checked) selected.Add(entry.Id); else selected.Remove(entry.Id);
-        else return;
+        else
+        {
+            updatingTree = true; node.Checked = false; updatingTree = false; return;
+        }
         updatingTree = true;
         try
         {

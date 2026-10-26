@@ -1,0 +1,1494 @@
+{
+  "SourceSha256": "296e1f72f90238f38b150502d4adee23075ee09793f09570d97d41d161cfb6d0",
+  "ExecutableSha256": "44aebf410981452e547397b35a91430c546048ee72359ac914b30f12a9e2d40a",
+  "Entries": [
+    {
+      "Id": "3daudio",
+      "Name": "Som Espacial (Áudio 3D)"
+    },
+    {
+      "Id": "aarsvc",
+      "Name": "Runtime de Ativação do Agente"
+    },
+    {
+      "Id": "accessibility",
+      "Name": "Ferramentas de Acessibilidade (Facilidade de Acesso)"
+    },
+    {
+      "Id": "accessibility_cursors",
+      "Name": "Ponteiros do Mouse (Ferramentas de Acessibilidade)"
+    },
+    {
+      "Id": "accessibility_magnifier",
+      "Name": "Lupa"
+    },
+    {
+      "Id": "accessibility_narrator",
+      "Name": "Narrador"
+    },
+    {
+      "Id": "aclui32",
+      "Name": "Interface da Lista de Controle de Acesso (ACL) - 32 bits"
+    },
+    {
+      "Id": "activedirectory",
+      "Name": "Active Directory"
+    },
+    {
+      "Id": "adamclient",
+      "Name": "Active Directory Lightweight Directory Services (AD LDS)"
+    },
+    {
+      "Id": "afunix",
+      "Name": "Soquete Unix (AF_UNIX)"
+    },
+    {
+      "Id": "alg",
+      "Name": "Serviço de Gateway da Camada de Aplicativo"
+    },
+    {
+      "Id": "apxunit",
+      "Name": "Driver de alto-falante e microfone APX"
+    },
+    {
+      "Id": "asimov",
+      "Name": "Cliente de Telemetria"
+    },
+    {
+      "Id": "assembly.net",
+      "Name": "Cache .NET assembly"
+    },
+    {
+      "Id": "assignedaccess",
+      "Name": "Acesso Atribuído"
+    },
+    {
+      "Id": "audit",
+      "Name": "Auditoria do Windows"
+    },
+    {
+      "Id": "auditpol",
+      "Name": "Auditoria do Windows (Ferramentas)"
+    },
+    {
+      "Id": "autochk32",
+      "Name": "Utilitário de Verificação do Sistema de Arquivos de Inicialização (Autochk) - 32 bits"
+    },
+    {
+      "Id": "autofstx",
+      "Name": "Utilitário de recuperação de atualização FsTx de inicialização (AutoFsTx)"
+    },
+    {
+      "Id": "autoplay",
+      "Name": "Reprodução Automática"
+    },
+    {
+      "Id": "axinstall",
+      "Name": "Serviço de Instalação ActiveX"
+    },
+    {
+      "Id": "azman",
+      "Name": "Gerenciador de Autorizações"
+    },
+    {
+      "Id": "azman32",
+      "Name": "Gerenciador de Autorizações - 32 bits"
+    },
+    {
+      "Id": "azuread",
+      "Name": "Azure Active Directory"
+    },
+    {
+      "Id": "backup",
+      "Name": "Backup e Restauração"
+    },
+    {
+      "Id": "bfs",
+      "Name": "Sistema de Arquivos Brokering"
+    },
+    {
+      "Id": "bingsearch",
+      "Name": "Bing Search (InboxApp)"
+    },
+    {
+      "Id": "biometric",
+      "Name": "Biometria - Suporte"
+    },
+    {
+      "Id": "biometricservice",
+      "Name": "Biometria - Serviço"
+    },
+    {
+      "Id": "bootmanagerpcat",
+      "Name": "Gerenciador de Inicialização (PCAT)"
+    },
+    {
+      "Id": "branchcacheclient",
+      "Name": "Cliente BranchCache"
+    },
+    {
+      "Id": "c5e2524a-ea46-4f67-841f-6a9465d9d515",
+      "Name": "Explorador de Arquivos (Legado)"
+    },
+    {
+      "Id": "calculator",
+      "Name": "calculator"
+    },
+    {
+      "Id": "cdosys",
+      "Name": "Objetos de Dados de Colaboração para Windows (CDOSYS)"
+    },
+    {
+      "Id": "ceip",
+      "Name": "CEIP (SQM)"
+    },
+    {
+      "Id": "cellulartime",
+      "Name": "Hora do Celular"
+    },
+    {
+      "Id": "charmap",
+      "Name": "Mapa de Caracteres"
+    },
+    {
+      "Id": "clip",
+      "Name": "Plataforma de Licença de Cliente"
+    },
+    {
+      "Id": "clipboardusersvc",
+      "Name": "Serviço de Usuário da Área de Transferência"
+    },
+    {
+      "Id": "clouddesktop",
+      "Name": "PC na Nuvem"
+    },
+    {
+      "Id": "clouddownload",
+      "Name": "Recuperação do Windows (WinRE) - Download da nuvem"
+    },
+    {
+      "Id": "cloudfiles",
+      "Name": "Cloud Files API"
+    },
+    {
+      "Id": "cloudid",
+      "Name": "Serviço de Identidade na Nuvem da Microsoft"
+    },
+    {
+      "Id": "cloudnotifications",
+      "Name": "Notificações da Nuvem"
+    },
+    {
+      "Id": "comlegacyole32",
+      "Name": "COM OLE 2.x - Legado - 32 bits"
+    },
+    {
+      "Id": "commmc32",
+      "Name": "COM+ (Serviços do Componente) (Console de gerenciamento) - 32 bits"
+    },
+    {
+      "Id": "compluseventsystem",
+      "Name": "Sistema de Eventos COM+"
+    },
+    {
+      "Id": "complussysapp",
+      "Name": "Aplicativo do Sistema COM+"
+    },
+    {
+      "Id": "componentpackagesupport",
+      "Name": "Suporte ao Pacote de Componentes"
+    },
+    {
+      "Id": "consentux",
+      "Name": "Consentimento UX"
+    },
+    {
+      "Id": "copilotpwa",
+      "Name": "Windows Copilot (InboxApp)"
+    },
+    {
+      "Id": "dafproviders",
+      "Name": "Estrutura de Associação de Dispositivos (DAF) - Provedores"
+    },
+    {
+      "Id": "dashost",
+      "Name": "Serviço de Associação de Dispositivos"
+    },
+    {
+      "Id": "datacenterbridging",
+      "Name": "Data Center Bridging (DCB)"
+    },
+    {
+      "Id": "dcsvc",
+      "Name": "Serviço de Configuração Declarada (DC)"
+    },
+    {
+      "Id": "desktopactivitymoderator",
+      "Name": "Moderador de Atividades da Área de Trabalho (DAM)"
+    },
+    {
+      "Id": "desktopimgdownldr",
+      "Name": "Descarregador de imagem de área de trabalho"
+    },
+    {
+      "Id": "devicecenter",
+      "Name": "Central de Dispositivos (Dispositivos e Impressoras)"
+    },
+    {
+      "Id": "deviceexperience",
+      "Name": "Experiência do Dispositivo"
+    },
+    {
+      "Id": "devicepicker",
+      "Name": "Seletor de Dispositivos"
+    },
+    {
+      "Id": "devicesync",
+      "Name": "Microsoft Sync Framework"
+    },
+    {
+      "Id": "deviceupdatecenter",
+      "Name": "Centro de Atualização de Dispositivos"
+    },
+    {
+      "Id": "devquerybroker",
+      "Name": "DevQuery Background Discovery Broker"
+    },
+    {
+      "Id": "dhcpclient32",
+      "Name": "Cliente DHCP - 32 bits"
+    },
+    {
+      "Id": "diagnostics",
+      "Name": "Diagnósticos e Solução de Problemas"
+    },
+    {
+      "Id": "directaccess",
+      "Name": "Conexão de Acesso Direto"
+    },
+    {
+      "Id": "directml",
+      "Name": "Aprendizado de Máquina Direto (DirectML)"
+    },
+    {
+      "Id": "diskdiagnosis",
+      "Name": "Diagnósticos de falha de disco"
+    },
+    {
+      "Id": "diskquota",
+      "Name": "Cota do Disco"
+    },
+    {
+      "Id": "diskquota32",
+      "Name": "Cota do Disco - 32 bits"
+    },
+    {
+      "Id": "diskraid",
+      "Name": "Ferramenta DiskRAID"
+    },
+    {
+      "Id": "displayswitch",
+      "Name": "Alternar Exibição"
+    },
+    {
+      "Id": "dnsclient32",
+      "Name": "Cliente DNS - 32 bits"
+    },
+    {
+      "Id": "dolbyatmos",
+      "Name": "Pacote de codecs Dolby Atmos"
+    },
+    {
+      "Id": "domainclientssvc",
+      "Name": "Agente de Diretiva IPsec"
+    },
+    {
+      "Id": "driver_c_fdc.inf",
+      "Name": "driver_c_fdc.inf"
+    },
+    {
+      "Id": "driver_c_floppydisk.inf",
+      "Name": "driver_c_floppydisk.inf"
+    },
+    {
+      "Id": "driver_fdc.inf",
+      "Name": "driver_fdc.inf"
+    },
+    {
+      "Id": "driver_flpydisk.inf",
+      "Name": "driver_flpydisk.inf"
+    },
+    {
+      "Id": "driver_helloface.inf",
+      "Name": "driver_helloface.inf"
+    },
+    {
+      "Id": "dvdplay",
+      "Name": "Reprodução de DVD"
+    },
+    {
+      "Id": "e2a4f912-2574-4a75-9bb0-0d023378592b",
+      "Name": "Resolvedor de Apps"
+    },
+    {
+      "Id": "eaphost",
+      "Name": "Protocolo de Autenticação Extensível (EAP)"
+    },
+    {
+      "Id": "easeofaccessthemes",
+      "Name": "Temas de Facilidade de Acesso"
+    },
+    {
+      "Id": "edgehtml32",
+      "Name": "Visualizador HTML - 32 bits"
+    },
+    {
+      "Id": "edgewebviewlegacy",
+      "Name": "Tempo de execução do WebView2 (Legado)"
+    },
+    {
+      "Id": "efsfeature",
+      "Name": "Sistema de Arquivos com Criptografia (EFS) - Recurso"
+    },
+    {
+      "Id": "embeddedexperience",
+      "Name": "Bloqueio de Dispositivo (Experiência Incorporada)"
+    },
+    {
+      "Id": "embeddedmode",
+      "Name": "Modo Incorporado"
+    },
+    {
+      "Id": "encprovider",
+      "Name": "Serviço de Host do Provedor de Criptografia do Windows"
+    },
+    {
+      "Id": "enhancedstorage",
+      "Name": "Armazenamento Aprimorado"
+    },
+    {
+      "Id": "entappsvc",
+      "Name": "Serviço de gerenciamento de aplicativos corporativos"
+    },
+    {
+      "Id": "enterpriseclientsync",
+      "Name": "Cliente de Pastas de Trabalho"
+    },
+    {
+      "Id": "enterprisedataprotection",
+      "Name": "Proteção de Dados Empresariais (EDP/WIP)"
+    },
+    {
+      "Id": "errorreporting",
+      "Name": "Relatório de Erros do Windows"
+    },
+    {
+      "Id": "esentutil32",
+      "Name": "Mecanismo de Armazenamento Extensível - Utilitários - 32 bits"
+    },
+    {
+      "Id": "eudcedit",
+      "Name": "Editor de Caracteres Particulares"
+    },
+    {
+      "Id": "eventtracing",
+      "Name": "Rastreamento de Eventos para Windows (ETW)"
+    },
+    {
+      "Id": "f46d4000-fd22-4db4-ac8e-4e1ddde828fe",
+      "Name": "Caixa de diálogo Adicionar Sugestões de Pasta"
+    },
+    {
+      "Id": "facerecognition",
+      "Name": "Reconhecimento de Face"
+    },
+    {
+      "Id": "fciclient",
+      "Name": "Gerenciador de Recursos do Servidor de Arquivos"
+    },
+    {
+      "Id": "fclip",
+      "Name": "Plataforma de Licença de Cliente - Flexível (fclip)"
+    },
+    {
+      "Id": "fdphost",
+      "Name": "Descoberta de Rede"
+    },
+    {
+      "Id": "filehistory",
+      "Name": "Histórico de Arquivos"
+    },
+    {
+      "Id": "filerevocationmanager",
+      "Name": "Gerenciador de Revogação de Arquivos - 32 bits"
+    },
+    {
+      "Id": "filetrace",
+      "Name": "Minifiltro de Traços de Arquivos"
+    },
+    {
+      "Id": "firstlogonanim",
+      "Name": "Animação do primeiro logon"
+    },
+    {
+      "Id": "flipgridpwa",
+      "Name": "Flipgrid PWA (InboxApp)"
+    },
+    {
+      "Id": "folderredirection",
+      "Name": "Redirecionamento de Pasta"
+    },
+    {
+      "Id": "font_malgungothic",
+      "Name": "Malgun Gothic"
+    },
+    {
+      "Id": "font_malgungothicbold",
+      "Name": "Malgun Gothic Bold"
+    },
+    {
+      "Id": "font_microsoftjhengheibold",
+      "Name": "Microsoft JhengHei Bold & Microsoft JhengHei UI Bold"
+    },
+    {
+      "Id": "font_microsoftjhengheilight",
+      "Name": "Microsoft JhengHei Light & Microsoft JhengHei UI Light"
+    },
+    {
+      "Id": "font_microsoftyaheibold",
+      "Name": "Microsoft YaHei Bold & Microsoft YaHei UI Bold"
+    },
+    {
+      "Id": "font_microsoftyaheilight",
+      "Name": "Microsoft YaHei Light & Microsoft YaHei UI Light"
+    },
+    {
+      "Id": "font_mingliub",
+      "Name": "MingLiU-ExtB & PMingLiU-ExtB & MingLiU_HKSCS-ExtB"
+    },
+    {
+      "Id": "font_simsun",
+      "Name": "SimSun & NSimSun"
+    },
+    {
+      "Id": "font_simsunb",
+      "Name": "SimSun-ExtB"
+    },
+    {
+      "Id": "font_yugothic",
+      "Name": "Yu Gothic Regular & Yu Gothic UI Semilight"
+    },
+    {
+      "Id": "font_yugothicbold",
+      "Name": "Yu Gothic Bold & Yu Gothic UI Semibold & Yu Gothic UI Bold"
+    },
+    {
+      "Id": "font_yugothiclight",
+      "Name": "Yu Gothic Light & Yu Gothic UI Light"
+    },
+    {
+      "Id": "font_yugothicmedium",
+      "Name": "Yu Gothic Medium & Yu Gothic UI Regular"
+    },
+    {
+      "Id": "frameservernet",
+      "Name": "Fonte da Câmera em Rede"
+    },
+    {
+      "Id": "gameexplorer",
+      "Name": "Explorador de Jogos"
+    },
+    {
+      "Id": "gameinputsvc",
+      "Name": "Serviço GameInput"
+    },
+    {
+      "Id": "graphicsperfsvc",
+      "Name": "Serviço de monitoramento de desempenho gráfico"
+    },
+    {
+      "Id": "hbaapi",
+      "Name": "API Host Bus Adapter (HBA)"
+    },
+    {
+      "Id": "hwreqchk",
+      "Name": "Biblioteca de Verificação dos Requisitos de Hardware"
+    },
+    {
+      "Id": "hwsupport_bluetooth",
+      "Name": "Bluetooth"
+    },
+    {
+      "Id": "hwsupport_floppy",
+      "Name": "Disquete"
+    },
+    {
+      "Id": "hwsupport_infrared",
+      "Name": "Dispositivos infravermelhos"
+    },
+    {
+      "Id": "hwsupport_modemsettings",
+      "Name": "Configurações de modem compartilhadas (mdmgl*.inf)"
+    },
+    {
+      "Id": "hwsupport_smartcard",
+      "Name": "Cartão Inteligente"
+    },
+    {
+      "Id": "hwsupport_telephony",
+      "Name": "Telefonia"
+    },
+    {
+      "Id": "hwsupport_tv",
+      "Name": "Codecs e suporte do Sintonizador de TV"
+    },
+    {
+      "Id": "ias",
+      "Name": "Serviço de Autenticação da Internet (IAS)"
+    },
+    {
+      "Id": "icu32",
+      "Name": "Componentes Unicode Internacionais - 32 bits"
+    },
+    {
+      "Id": "iis",
+      "Name": "Internet Information Server (IIS)"
+    },
+    {
+      "Id": "imapiv232",
+      "Name": "API de masterização de imagens (IMAPIv2) - 32 bits"
+    },
+    {
+      "Id": "insiderhub",
+      "Name": "Programa Windows Insider"
+    },
+    {
+      "Id": "installshieldwow64",
+      "Name": "InstallShield WOW64"
+    },
+    {
+      "Id": "internetexplorer",
+      "Name": "Internet Explorer"
+    },
+    {
+      "Id": "internetexplorer32",
+      "Name": "Internet Explorer - 32 bits"
+    },
+    {
+      "Id": "ipt",
+      "Name": "Tecnologia de Proteção de Identidade (Intel IPT)"
+    },
+    {
+      "Id": "ipxlatcfg",
+      "Name": "Servição de Configuração de Conversão de IP"
+    },
+    {
+      "Id": "iscsi",
+      "Name": "Iniciador iSCSI"
+    },
+    {
+      "Id": "isoburn",
+      "Name": "Ferramenta de Gravação de Imagem de Disco do Windows"
+    },
+    {
+      "Id": "kerberos32",
+      "Name": "Cliente Kerberos - 32 bits"
+    },
+    {
+      "Id": "kerneldebug",
+      "Name": "Depuração de Kernel"
+    },
+    {
+      "Id": "la57",
+      "Name": "Endereçamento linear de 57 bits"
+    },
+    {
+      "Id": "langime",
+      "Name": "Editor do Método de Entrada (IME)"
+    },
+    {
+      "Id": "langimejp",
+      "Name": "Japonês (IME)"
+    },
+    {
+      "Id": "langimeko",
+      "Name": "Coreano (IME)"
+    },
+    {
+      "Id": "langimetc",
+      "Name": "Chinês Tradicional (IME)"
+    },
+    {
+      "Id": "laps",
+      "Name": "Solução de Senha do Administrador Local do Windows (LAPS)"
+    },
+    {
+      "Id": "lcu",
+      "Name": "Cache de Atualização Cumulativa (LCU)"
+    },
+    {
+      "Id": "legacycomponents",
+      "Name": "Componentes herdados"
+    },
+    {
+      "Id": "livecaptions",
+      "Name": "Legendas ao vivo"
+    },
+    {
+      "Id": "lpasvc",
+      "Name": "Serviço de Assistente de Perfil Local"
+    },
+    {
+      "Id": "mail",
+      "Name": "Windows Mail"
+    },
+    {
+      "Id": "mailcommdll",
+      "Name": "Biblioteca de comunicações do Windows Mail"
+    },
+    {
+      "Id": "manifestbackup",
+      "Name": "Backup de Manifest (WinSxS\\Backup)"
+    },
+    {
+      "Id": "mapcontrol",
+      "Name": "Controle de Mapa"
+    },
+    {
+      "Id": "mediacodec",
+      "Name": "Windows Media Codecs"
+    },
+    {
+      "Id": "mediacodec32",
+      "Name": "Windows Media Codecs - 32 bits"
+    },
+    {
+      "Id": "mediacodeccore",
+      "Name": "Windows Media Codecs (Núcleo)"
+    },
+    {
+      "Id": "mediafoundation32",
+      "Name": "Media Foundation - 32 bits"
+    },
+    {
+      "Id": "mediaplayer",
+      "Name": "Windows Media Player"
+    },
+    {
+      "Id": "mediaplayer32",
+      "Name": "Windows Media Player - 32 bits"
+    },
+    {
+      "Id": "mediaplayernetworksharing",
+      "Name": "Serviço de Compartilhamento de Rede WMP"
+    },
+    {
+      "Id": "mediaplayernetworksharing32",
+      "Name": "Serviço de Compartilhamento de Rede WMP - 32 bits"
+    },
+    {
+      "Id": "mediastreaming",
+      "Name": "Streaming de Mídia"
+    },
+    {
+      "Id": "mediastreamingreceiver",
+      "Name": "Streaming de Mídia - Receptor"
+    },
+    {
+      "Id": "mediastreamingtransmitter",
+      "Name": "Streaming de Mídia - Transmissor"
+    },
+    {
+      "Id": "memorydiagnostic",
+      "Name": "Diagnóstico de Memória"
+    },
+    {
+      "Id": "messagingsvc",
+      "Name": "Serviço de Mensagens"
+    },
+    {
+      "Id": "microsoft.accountscontrol",
+      "Name": "Email e contas"
+    },
+    {
+      "Id": "microsoft.asynctextservice",
+      "Name": "AsyncTextService"
+    },
+    {
+      "Id": "microsoft.bioenrollment",
+      "Name": "Configuração do Windows Hello"
+    },
+    {
+      "Id": "microsoft.creddialoghost",
+      "Name": "Diálogo de Credencial"
+    },
+    {
+      "Id": "microsoft.ecapp",
+      "Name": "Controle com os Olhos"
+    },
+    {
+      "Id": "microsoft.microsoftedge",
+      "Name": "Microsoft Edge (Legado)"
+    },
+    {
+      "Id": "microsoft.microsoftedgedevtoolsclient",
+      "Name": "Cliente do Microsoft Edge DevTools"
+    },
+    {
+      "Id": "microsoft.sechealthui",
+      "Name": "Windows Defender"
+    },
+    {
+      "Id": "microsoft.services.store.engagement",
+      "Name": "Microsoft Engagement Framework"
+    },
+    {
+      "Id": "microsoft.storepurchaseapp",
+      "Name": "Store Experience Host"
+    },
+    {
+      "Id": "microsoft.win32webviewhost",
+      "Name": "Visualizador Web de Aplicativo da Área de Trabalho"
+    },
+    {
+      "Id": "microsoft.windows.apprep.chxapp",
+      "Name": "SmartScreen"
+    },
+    {
+      "Id": "microsoft.windows.assignedaccesslockapp",
+      "Name": "Aplicativo Bloqueio de Tela de Acesso Atribuído"
+    },
+    {
+      "Id": "microsoft.windows.capturepicker",
+      "Name": "Ferramenta de Captura"
+    },
+    {
+      "Id": "microsoft.windows.contentdeliverymanager",
+      "Name": "Gerenciador de Entrega de Conteúdo"
+    },
+    {
+      "Id": "microsoft.windows.narratorquickstart",
+      "Name": "Narrador"
+    },
+    {
+      "Id": "microsoft.windows.oobenetworkcaptiveportal",
+      "Name": "Fluxo do Portal Cativo"
+    },
+    {
+      "Id": "microsoft.windows.oobenetworkconnectionflow",
+      "Name": "Sem Conexão de Rede"
+    },
+    {
+      "Id": "microsoft.windows.parentalcontrols",
+      "Name": "Microsoft Family Safety"
+    },
+    {
+      "Id": "microsoft.windows.peopleexperiencehost",
+      "Name": "Experiência do Windows Shell"
+    },
+    {
+      "Id": "microsoft.windows.pinningconfirmationdialog",
+      "Name": "PinningConfirmationDialog"
+    },
+    {
+      "Id": "microsoft.windows.secureassessmentbrowser",
+      "Name": "Fazer um Teste"
+    },
+    {
+      "Id": "microsoft.windows.xgpuejectdialog",
+      "Name": "Remover Dispositivo com Segurança"
+    },
+    {
+      "Id": "microsoft.xboxgamecallableui",
+      "Name": "Xbox Game UI"
+    },
+    {
+      "Id": "microsoftwindows.client.aix",
+      "Name": "Windows Copilot (Pacote de Experiência de Recursos do Windows)"
+    },
+    {
+      "Id": "midi",
+      "Name": "Microsoft GS Wavetable SW Synth (MIDI)"
+    },
+    {
+      "Id": "mmga",
+      "Name": "MAPI MMGA"
+    },
+    {
+      "Id": "mobiledevicemanagement",
+      "Name": "Gerenciamento de Dispositivo Móvel (MDM)"
+    },
+    {
+      "Id": "mobilepc",
+      "Name": "mobilepc"
+    },
+    {
+      "Id": "mobilepc_location",
+      "Name": "Notificações de localização"
+    },
+    {
+      "Id": "mobilepc_networkprojection",
+      "Name": "Projeção de Rede"
+    },
+    {
+      "Id": "mobilepc_sensors",
+      "Name": "Sensores"
+    },
+    {
+      "Id": "mpe",
+      "Name": "Mecanismo de Privacidade da Microsoft"
+    },
+    {
+      "Id": "mpeg2splitter",
+      "Name": "MPEG-2 Splitter"
+    },
+    {
+      "Id": "msdtc",
+      "Name": "Coordenador de Transações Distribuídas (DTC)"
+    },
+    {
+      "Id": "msmq",
+      "Name": "Microsoft Message Queue (MSMQ)"
+    },
+    {
+      "Id": "mtf",
+      "Name": "Idioma MTF"
+    },
+    {
+      "Id": "multipointconnector",
+      "Name": "Conector Multiponto"
+    },
+    {
+      "Id": "naturalauthentication",
+      "Name": "Autenticação Natural"
+    },
+    {
+      "Id": "naturallanglegacy",
+      "Name": "Idioma Natural - Legado"
+    },
+    {
+      "Id": "ncb",
+      "Name": "Mediador de Conexão de Rede"
+    },
+    {
+      "Id": "ncdauto",
+      "Name": "Configuração Automática de Dispositivos Conectados à Rede"
+    },
+    {
+      "Id": "ndiscap",
+      "Name": "Captura de Pacotes NDIS (NDISCAP)"
+    },
+    {
+      "Id": "ndisimplat",
+      "Name": "Protocolo do Multiplexador do Adaptador de Rede"
+    },
+    {
+      "Id": "ndu",
+      "Name": "Driver de Monitoramento de Uso de Dados de Rede"
+    },
+    {
+      "Id": "netbios",
+      "Name": "NetBIOS sobre transporte TCP"
+    },
+    {
+      "Id": "netcenter",
+      "Name": "Centro de Rede e Compartilhamento"
+    },
+    {
+      "Id": "netcmd32",
+      "Name": "Ferramenta de linha de comando de rede (net.exe) - 32 bits"
+    },
+    {
+      "Id": "netprofile32",
+      "Name": "Perfil de Rede - 32 bits"
+    },
+    {
+      "Id": "netqos",
+      "Name": "Agendador de Pacotes Quality of Service (QoS)"
+    },
+    {
+      "Id": "netsh32",
+      "Name": "Shell de rede (netsh.exe) - 32 bits"
+    },
+    {
+      "Id": "nettopology",
+      "Name": "Protocolo de Descoberta de Topologia na Camada do Link (LLTD)"
+    },
+    {
+      "Id": "nfc",
+      "Name": "Comunicação por Campo de Proximidade (NFC)"
+    },
+    {
+      "Id": "nfsclient",
+      "Name": "Ferramentas Administrativas NFS"
+    },
+    {
+      "Id": "notificationintelligenceplatform",
+      "Name": "Plataforma de Inteligência de Notificação"
+    },
+    {
+      "Id": "nowplaying",
+      "Name": "Gerenciador de Sessão 'Reproduzindo Agora"
+    },
+    {
+      "Id": "ntvdm",
+      "Name": "Subsistema NTVDM 16-bits"
+    },
+    {
+      "Id": "offlinefiles",
+      "Name": "Arquivos Off-line"
+    },
+    {
+      "Id": "onedrive",
+      "Name": "onedrive"
+    },
+    {
+      "Id": "openssh",
+      "Name": "openssh"
+    },
+    {
+      "Id": "osk_acc",
+      "Name": "Teclado Virtual (Ferramentas de Acessibilidade)"
+    },
+    {
+      "Id": "oskthemes",
+      "Name": "Teclado Virtual (Temas de Personalização do Windows)"
+    },
+    {
+      "Id": "otherthemes",
+      "Name": "Temas de Personalização do Windows"
+    },
+    {
+      "Id": "outlookpwa",
+      "Name": "Outlook PWA (InboxApp)"
+    },
+    {
+      "Id": "payments",
+      "Name": "Pagamentos"
+    },
+    {
+      "Id": "pdfreader",
+      "Name": "Windows Reader (PDF)"
+    },
+    {
+      "Id": "penservice",
+      "Name": "Serviço de Caneta"
+    },
+    {
+      "Id": "perfmon",
+      "Name": "Monitor de Performance"
+    },
+    {
+      "Id": "performancerecorder",
+      "Name": "Gravador de Desempenho do Windows"
+    },
+    {
+      "Id": "perftools",
+      "Name": "Ferramentas CMD de Desempenho para Rastreamento"
+    },
+    {
+      "Id": "phonesvc",
+      "Name": "Serviço de Telefone"
+    },
+    {
+      "Id": "pickerhost32",
+      "Name": "Host da Interface de Seleção de Arquivos - 32 bits"
+    },
+    {
+      "Id": "picturepassword",
+      "Name": "Senha por imagem"
+    },
+    {
+      "Id": "pimindexmaintenancesvc",
+      "Name": "Dados de Contato"
+    },
+    {
+      "Id": "pinsignin",
+      "Name": "Suporte de entrada PIN"
+    },
+    {
+      "Id": "pktmon",
+      "Name": "Monitor de Pacote (PktMon)"
+    },
+    {
+      "Id": "pla",
+      "Name": "Logs de Desempenho e Alertas"
+    },
+    {
+      "Id": "pluton",
+      "Name": "Processador de segurança Microsoft Pluton"
+    },
+    {
+      "Id": "pos",
+      "Name": "Point of Service (POS)"
+    },
+    {
+      "Id": "powershelldsc",
+      "Name": "Configuração de Estado Desejado (DSC)"
+    },
+    {
+      "Id": "powershellise32",
+      "Name": "PowerShell ISE - 32 bits"
+    },
+    {
+      "Id": "print3d32",
+      "Name": "Impressão 3D - 32 bits"
+    },
+    {
+      "Id": "proquota",
+      "Name": "Cota do perfil"
+    },
+    {
+      "Id": "proximity",
+      "Name": "Proximidade - Wi-Fi Direct"
+    },
+    {
+      "Id": "pushnotificationssvc",
+      "Name": "Serviço de Notificações Push do Windows (Sistema)"
+    },
+    {
+      "Id": "pushtoinstall",
+      "Name": "Serviço PushToInstall do Windows"
+    },
+    {
+      "Id": "quiethours",
+      "Name": "Horas em Silêncio (Assistente de Foco)"
+    },
+    {
+      "Id": "rasauto",
+      "Name": "Gerenciador de Conexão Automática do Acesso Remoto"
+    },
+    {
+      "Id": "rascmd",
+      "Name": "Ferramentas do Cliente do Serviço de Acesso Remoto"
+    },
+    {
+      "Id": "rasmans",
+      "Name": "Gerenciador de Conexão de Acesso Remoto"
+    },
+    {
+      "Id": "rdc",
+      "Name": "Compactação Diferencial Remota (RDC)"
+    },
+    {
+      "Id": "rdmaping",
+      "Name": "Ferramenta de ping do Remote Direct Memory Access (RDMA)"
+    },
+    {
+      "Id": "rdpclient32",
+      "Name": "Cliente da Área de Trabalho Remota - 32 bits"
+    },
+    {
+      "Id": "rdpserver",
+      "Name": "Servidor da Área de Trabalho Remota"
+    },
+    {
+      "Id": "rdpserverlic",
+      "Name": "Licenciamento de Área de Trabalho Remota"
+    },
+    {
+      "Id": "readyboost",
+      "Name": "readyboost"
+    },
+    {
+      "Id": "regedit32",
+      "Name": "Editor de Registro - 32 bits"
+    },
+    {
+      "Id": "remoteassistance",
+      "Name": "Assistência Remota"
+    },
+    {
+      "Id": "remotefx",
+      "Name": "remotefx"
+    },
+    {
+      "Id": "remoteportredirector",
+      "Name": "Redirecionador de Portas dos Serviços da Área de Trabalho Remota"
+    },
+    {
+      "Id": "remoteregistry",
+      "Name": "Registro Remoto"
+    },
+    {
+      "Id": "retaildemo",
+      "Name": "Conteúdo de Demonstração para Varejo"
+    },
+    {
+      "Id": "rightsmanagement",
+      "Name": "Suporte para Gerenciamento de Direitos"
+    },
+    {
+      "Id": "rotationmanager",
+      "Name": "Gerenciador de Rotação Automática"
+    },
+    {
+      "Id": "rpclocator",
+      "Name": "Localizador de Procedência de Chamada Remota (RPC)"
+    },
+    {
+      "Id": "scripto",
+      "Name": "scripto"
+    },
+    {
+      "Id": "securestartup",
+      "Name": "Criptografia de Unidade BitLocker"
+    },
+    {
+      "Id": "securitycenter",
+      "Name": "Central de Segurança"
+    },
+    {
+      "Id": "sendmail",
+      "Name": "Enviar Para E-mail e Área de Trabalho"
+    },
+    {
+      "Id": "sens",
+      "Name": "Serviço de Notificações de Eventos do Sistema (SENS)"
+    },
+    {
+      "Id": "settingsync",
+      "Name": "Configurar Sincronização"
+    },
+    {
+      "Id": "sharedaccess",
+      "Name": "Compartilhamento de Conexão da Internet (ICS)"
+    },
+    {
+      "Id": "sharedpc",
+      "Name": "Modo de Compartilhamento de PC"
+    },
+    {
+      "Id": "sharehost32",
+      "Name": "Host de Compartilhamento - 32 bits"
+    },
+    {
+      "Id": "sharemediacpl",
+      "Name": "Painel de Controle - Compartilhar Mídia"
+    },
+    {
+      "Id": "sharetargets32",
+      "Name": "Destinos de compartilhamento - 32 bits"
+    },
+    {
+      "Id": "sihclient",
+      "Name": "Cliente Server-Initiated Healing"
+    },
+    {
+      "Id": "simpletcp",
+      "Name": "Serviços TCP/IP simples"
+    },
+    {
+      "Id": "sleepstudy",
+      "Name": "Estudo do Sono"
+    },
+    {
+      "Id": "smartactionplatform",
+      "Name": "Plataforma de Ação Inteligente"
+    },
+    {
+      "Id": "smbdirect",
+      "Name": "SMB Direct (RDMA)"
+    },
+    {
+      "Id": "smbv1",
+      "Name": "SMB v1"
+    },
+    {
+      "Id": "smbwitnessclientapi",
+      "Name": "API do SMB Witness Client"
+    },
+    {
+      "Id": "sorting",
+      "Name": "Idioma Natural - Classificação"
+    },
+    {
+      "Id": "soundthemes",
+      "Name": "Esquemas de Som"
+    },
+    {
+      "Id": "sourcessxsdir",
+      "Name": "Repositório de recurso manual"
+    },
+    {
+      "Id": "speechapi",
+      "Name": "API de Fala"
+    },
+    {
+      "Id": "speechcommon",
+      "Name": "Reconhecimento de Fala"
+    },
+    {
+      "Id": "speechtts",
+      "Name": "Fala TTS"
+    },
+    {
+      "Id": "spellchecking",
+      "Name": "Verificação Ortográfica"
+    },
+    {
+      "Id": "srumon",
+      "Name": "Serviço de Uso de Dados"
+    },
+    {
+      "Id": "sstackwow64",
+      "Name": "Pilha de serviços - 32 bits"
+    },
+    {
+      "Id": "staticfontcache",
+      "Name": "Cache de Fonte Estática"
+    },
+    {
+      "Id": "stepsrecorder",
+      "Name": "Gravador de Passos"
+    },
+    {
+      "Id": "storagespaces",
+      "Name": "Espaços de Armazenamento"
+    },
+    {
+      "Id": "sudo",
+      "Name": "sudo"
+    },
+    {
+      "Id": "supportdir",
+      "Name": "Pasta de suporte"
+    },
+    {
+      "Id": "sustainabilityservice",
+      "Name": "Serviço de Sustentabilidade"
+    },
+    {
+      "Id": "symboliclinks",
+      "Name": "Links simbólicos herdados"
+    },
+    {
+      "Id": "synccenter",
+      "Name": "Central de Sincronização"
+    },
+    {
+      "Id": "systemreset",
+      "Name": "Redefinir Sistema para Windows"
+    },
+    {
+      "Id": "systemrestore",
+      "Name": "Restauração do Sistema"
+    },
+    {
+      "Id": "tabletpc",
+      "Name": "Tablet PC"
+    },
+    {
+      "Id": "targetedcontent32",
+      "Name": "Serviço de Conteúdo Direcionado - 32 bits"
+    },
+    {
+      "Id": "telnetclient",
+      "Name": "Cliente Telnet"
+    },
+    {
+      "Id": "tempcache",
+      "Name": "Arquivos do cache e temporários"
+    },
+    {
+      "Id": "tftpclient",
+      "Name": "Cliente TFTP"
+    },
+    {
+      "Id": "tieringengine",
+      "Name": "Gerenciamento de Níveis de Armazenamento"
+    },
+    {
+      "Id": "timetraveldebugger",
+      "Name": "Depurador de Viagem no Tempo (TTD)"
+    },
+    {
+      "Id": "tpmmmc32",
+      "Name": "Módulo de Plataforma Confiável (TPM) (Console de gerenciamento) - 32 bits"
+    },
+    {
+      "Id": "tpmvsc",
+      "Name": "Cartão Inteligente Virtual"
+    },
+    {
+      "Id": "trkwks",
+      "Name": "Cliente de Rastreamento de Link Distribuído"
+    },
+    {
+      "Id": "troubleshootingsvc",
+      "Name": "Serviço de Solução de Problemas Recomendado"
+    },
+    {
+      "Id": "tzautoupdate",
+      "Name": "Atualização Automática de Fuso Horário"
+    },
+    {
+      "Id": "uev",
+      "Name": "Virtualização de Experiência do Usuário (UE-V)"
+    },
+    {
+      "Id": "unexpectedcodepath",
+      "Name": "Codepath inesperado"
+    },
+    {
+      "Id": "universalprintsvc",
+      "Name": "Serviço Universal de Gerenciamento de Impressão"
+    },
+    {
+      "Id": "upnp",
+      "Name": "Host de Dispositivo UPnP"
+    },
+    {
+      "Id": "userchoiceprotection",
+      "Name": "Proteção de escolha do usuário"
+    },
+    {
+      "Id": "userdatasvc",
+      "Name": "Acesso aos Dados do Usuário"
+    },
+    {
+      "Id": "userdeviceregistration",
+      "Name": "Registro de Dispositivo do Usuário"
+    },
+    {
+      "Id": "voiceaccess",
+      "Name": "Acesso por voz"
+    },
+    {
+      "Id": "vpn",
+      "Name": "Suporte para Rede Privada Virtual (VPN)"
+    },
+    {
+      "Id": "vss",
+      "Name": "Cópia de Sombra de Volume"
+    },
+    {
+      "Id": "waasassessment",
+      "Name": "Serviço médico do Windows Update"
+    },
+    {
+      "Id": "wallet",
+      "Name": "Serviço Wallet"
+    },
+    {
+      "Id": "wallpaperdefault",
+      "Name": "Tela de Fundo da Área de Trabalho (Padrão)"
+    },
+    {
+      "Id": "wallpapers",
+      "Name": "Telas de Fundo da Área de Trabalho (Temas)"
+    },
+    {
+      "Id": "warpjitsvc",
+      "Name": "Serviço WARP JIT do DirectX"
+    },
+    {
+      "Id": "wcn",
+      "Name": "Windows Connect Now (WCN)"
+    },
+    {
+      "Id": "webcamexperience",
+      "Name": "Experiência da Webcam"
+    },
+    {
+      "Id": "webclient",
+      "Name": "Cliente Web"
+    },
+    {
+      "Id": "webthreatdefense",
+      "Name": "Serviço de Defesa contra Ameaças da Web"
+    },
+    {
+      "Id": "wfds",
+      "Name": "Serviço Gerenciador de Conexão de Serviços do Wi-Fi Direct"
+    },
+    {
+      "Id": "wfmmc32",
+      "Name": "Firewall do Windows (Console de gerenciamento) - 32 bits"
+    },
+    {
+      "Id": "widgetsplatformruntimeapp",
+      "Name": "Widgets Platform Runtime (InboxApp)"
+    },
+    {
+      "Id": "wificloudstore",
+      "Name": "Provedor de Sincronização Wi-Fi"
+    },
+    {
+      "Id": "wifinetworkmanager",
+      "Name": "Gerenciador de Rede Wi-Fi (Wi-Fi Sense)"
+    },
+    {
+      "Id": "winai",
+      "Name": "Aprendizado de Máquina do Windows AI"
+    },
+    {
+      "Id": "windows.cbspreview",
+      "Name": "Visualização de Código de Barras do Windows"
+    },
+    {
+      "Id": "windows.devicesflow32",
+      "Name": "Fluxo de Dispositivos - 32 bits"
+    },
+    {
+      "Id": "windowsglobalization32",
+      "Name": "Globalização do Windows - 32 bits"
+    },
+    {
+      "Id": "windowstogo",
+      "Name": "Windows To Go"
+    },
+    {
+      "Id": "wini3c",
+      "Name": "Circuito Interintegrado Aprimorado (I3C)"
+    },
+    {
+      "Id": "winocr",
+      "Name": "Windows TIFF IFilter (OCR)"
+    },
+    {
+      "Id": "winre",
+      "Name": "Recuperação do Windows (WinRE)"
+    },
+    {
+      "Id": "winresume",
+      "Name": "Continuar de Hibernar"
+    },
+    {
+      "Id": "winrm",
+      "Name": "Gerenciamento Remoto do Windows (WS-Management)"
+    },
+    {
+      "Id": "winsat",
+      "Name": "Ferramenta de Avaliação de Sistema do Windows (WinSAT)"
+    },
+    {
+      "Id": "wiredautoconfig",
+      "Name": "Configuração Automática de Rede com Fio"
+    },
+    {
+      "Id": "wmitools",
+      "Name": "Ferramentas de Instrumentação de Gerenciamento do Windows"
+    },
+    {
+      "Id": "wpdbusenum",
+      "Name": "Serviço Enumerador de Dispositivo Portátil"
+    },
+    {
+      "Id": "wwanautoconfig",
+      "Name": "Configuração Automática de WWAN"
+    },
+    {
+      "Id": "xbox",
+      "Name": "Xbox - Núcleo"
+    },
+    {
+      "Id": "zipfolder",
+      "Name": "Pasta ZIP & CAB"
+    },
+    {
+      "Id": "ztdns",
+      "Name": "DNS de Confiança Zero"
+    }
+  ]
+}

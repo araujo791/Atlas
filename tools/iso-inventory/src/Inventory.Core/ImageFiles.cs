@@ -32,7 +32,10 @@ public sealed class ImageFiles
 
     public static bool IsLink(string path)
     {
-        return (File.GetAttributes(path) & FileAttributes.ReparsePoint) != 0;
+        if ((File.GetAttributes(path) & FileAttributes.ReparsePoint) == 0) return false;
+        // WOF/WIM compression is a data reparse point, not a link to another path.
+        // Blocking every reparse point can hide real Windows image content.
+        return !OperatingSystem.IsWindows() || WindowsReparse.IsNameRedirect(path);
     }
 
     public ResolvedImageFile ResolveWindows(string input)

@@ -1,1 +1,6 @@
-<Project Sdk="Microsoft.NET.Sdk"><PropertyGroup><TargetFramework>net8.0</TargetFramework><Nullable>enable</Nullable><ImplicitUsings>enable</ImplicitUsings><DebugType>none</DebugType></PropertyGroup></Project>
+<Project Sdk="Microsoft.NET.Sdk">
+  <PropertyGroup><TargetFramework>net8.0</TargetFramework><Nullable>enable</Nullable><ImplicitUsings>enable</ImplicitUsings><DebugType>none</DebugType></PropertyGroup>
+  <ItemGroup><PackageReference Include="DiscUtils.Registry" Version="0.16.13" /></ItemGroup>
+  <ItemGroup><EmbeddedResource Include="NtlitePresetReference.json" /></ItemGroup>
+  <ItemGroup><EmbeddedResource Include="../../THIRD-PARTY-NOTICES.txt" LogicalName="Inventory.Core.ThirdPartyNotices.txt" /></ItemGroup>
+</Project>
