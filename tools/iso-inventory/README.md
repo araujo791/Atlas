@@ -1,107 +1,82 @@
-# ISO Inventory — portátil, somente leitura
+# ISO Inventory 0.2.0 — catálogo com seleção
 
-Protótipo para Windows 10/11 x64. Abra o executável em releases; ele inclui o
-runtime .NET e não precisa de instalação. A elevação de administrador é usada
-pelo Windows para montar imagens e consultar os hives offline.
+Executável portátil para Windows 10/11 x64, com runtime .NET incluído.
+Abra releases/ISOInventory-0.2.0-win-x64.exe. A elevação de administrador é
+necessária para as montagens e consultas offline do Windows.
 
-## Uso
+## Usar
 
-1. Abra ISOInventory-0.1.2-win-x64.exe.
-2. Selecione uma ISO, install.wim, install.esd ou uma pasta Windows offline.
-3. Pasta offline ou imagem com uma edição inicia a análise automaticamente.
-   Quando houver várias edições, escolha uma na janela e clique em Iniciar análise.
-   O botão Analisar permite repetir a análise da edição selecionada.
-4. Consulte Aplicativos, Serviços e drivers, Arquivos vinculados, Componentes
-   e Avisos e limites. Use a busca para filtrar a aba atual.
-5. Dê duplo clique em um aplicativo/serviço para ver os arquivos associados.
-   Limpar filtro volta à lista completa.
-6. Salvar JSON completo exporta todos os registros. A grade mostra no máximo
-   5.000 resultados de cada filtro; o JSON contém o inventário completo.
+1. Selecione ISO, WIM, ESD ou a raiz de uma pasta Windows offline.
+2. Pasta ou imagem com uma edição inicia automaticamente. Para várias edições,
+   escolha uma na janela de seleção.
+3. Expanda os grupos em Componentes da imagem. Clique no nome para ler estado,
+   evidências e dependências declaradas no painel à direita.
+4. Marque os itens para futura remoção. Todos começam desmarcados. Marcar um
+   grupo seleciona seus itens no filtro atual, inclusive páginas não abertas.
+   A seleção é preservada ao mudar a busca.
+5. Exportar seleção / JSON salva o catálogo completo, SelectionIntent e
+   SelectedCatalogIds. As marcações são planejamento; não executam remoções.
 
-ESD é exportado para um WIM temporário antes da montagem: reserve vários GB no
-disco temporário e aguarde a conclusão. Cancelamento não mata o DISM no meio de
-uma montagem; ele aguarda a operação nativa terminar e faz a limpeza.
+A aba Arquivos vinculados foi retirada. A interface agora usa uma árvore de
+componentes com caixas de seleção. Grupos grandes têm páginas expansíveis de
+250 itens; não existe o antigo corte visual de 5.000 resultados. O catálogo
+completo é pesquisável e exportável, mesmo com grupos ainda fechados.
 
-## O que é identificado
+## Conteúdo identificado
 
-- Pacotes provisionados: consulta DISM, mesmo quando WindowsApps não é acessível.
-- AppX/MSIX e apps do sistema: manifestos das pastas padrão, versões, publisher,
-  dependências declaradas, arquivos do pacote e tamanhos lógicos.
-- Programas clássicos: metadados de desinstalação HKLM 32/64 bits, referências a
-  ícones/desinstaladores e arquivos das pastas InstallLocation declaradas.
-- Serviços/drivers: ControlSet indicado pelo hive SYSTEM, início, conta,
-  dependências, ImagePath e Parameters/ServiceDll.
-- Recursos opcionais, capabilities e pacotes CBS: consultas de inventário DISM.
-- Arquivos vinculados: presença, tamanho lógico, origem do vínculo e múltiplos
-  vínculos ao mesmo caminho (por exemplo, svchost.exe compartilhado).
+- Componentes integrados: Defender Antivirus, Segurança do Windows, Edge,
+  WebView2, WinRE e instalador do OneDrive, quando há evidências na imagem.
+- Aplicativos AppX/MSIX e do sistema por manifesto; provisionamento via DISM.
+- Programas tradicionais registrados no HKLM offline de 32/64 bits.
+- Todos os registros de serviços e drivers no ControlSet selecionado.
+- Pacotes de drivers pelo DISM /Get-Drivers /All e pelos INF em Windows/INF.
+- Recursos opcionais e capabilities pelas consultas do DISM.
+- Pacotes CBS: inventário DISM e fallback dos manifestos em servicing/Packages.
+- Componentes WinSxS: identidades de assemblies presentes nos manifestos.
+  Manifestos comprimidos/não decodificados continuam visíveis pelo identificador
+  do arquivo, com esse limite indicado nos detalhes.
+- Scripts em Windows/Setup/Scripts, listados sem execução e sem inventar seus
+  efeitos futuros.
 
-Os hives SOFTWARE e SYSTEM são copiados para uma pasta temporária e somente
-as cópias são abertas com RegLoadAppKey/KEY_READ; não são carregados no HKLM do
-computador. ISO é montada com Access ReadOnly, e WIM com /ReadOnly. A desmontagem
-usa /Discard. O aplicativo não altera serviços, remove pacotes ou executa os
-comandos encontrados no registro. Links e junções internos não são seguidos.
+Cada item informa a evidência/estado: arquivo presente, apenas diretório,
+registro de serviço, manifesto sem confirmação de ativação, estado DISM etc.
+Uma pasta vazia ou um manifesto isolado não comprova instalação/ativação.
+O estado DISM substitui o fallback do manifesto CBS quando ambos identificam o
+mesmo pacote. Versões/arquiteturas diferentes de assemblies WinSxS são mantidas.
 
-Se a imagem já estiver montada pelo usuário, a ISO não é desmontada pelo app.
-Pastas Windows offline fornecidas pelo usuário não são montadas/desmontadas.
-Somente as montagens e pastas temporárias criadas pelo app são limpas. Se uma
-desmontagem falhar, a pasta é preservada e o local é registrado nos avisos.
+A coleta desta interface usa metadados em vez de enumerar todos os arquivos de
+cada pacote/programa. O campo legado Files do JSON pode ficar vazio; não é o
+catálogo de componentes. O relatório usa schema 2, com Catalog e seleção.
 
-## Limites
+## Segurança e limites de interpretação
 
-Este é um inventário, não o motor de remoção e dependências do NTLite.
-InstallLocation indica uma pasta declarada, não a propriedade exclusiva dos
-arquivos. Programas que apontam para raízes compartilhadas não têm essas raízes
-atribuídas a eles. Paths sem aspas podem ser ambíguos e são marcados como estimados.
+ISO é montada somente para leitura; WIM usa /ReadOnly e desmonta com /Discard.
+ESD é exportado para um WIM temporário e pode exigir vários GB no TEMP. Somente
+as montagens criadas pelo app são liberadas. Hives são copiados para TEMP e
+somente essas cópias são abertas com KEY_READ, sem carregar o HKLM do computador.
+Links/junções internos não são seguidos. Comandos encontrados na imagem não são
+executados. Falhas de desmontagem preservam a pasta e registram seu caminho.
 
-Tamanhos são lógicos: hard links, componentes compartilhados e compressão
-impedem usá-los como previsão de espaço recuperável. Múltiplos vínculos significam
-o mesmo caminho no inventário, não detecção completa de hard links/ownership CBS.
-Recursos e pacotes CBS não possuem mapeamento automático completo para seus arquivos.
-Apps por usuário, nomes ms-resource e descrições indiretas de DLLs podem exigir
-análise adicional; nomes indiretos são mostrados sem executar DLLs da imagem.
-Pode haver uma entrada de provisionamento e outra do conteúdo físico do pacote.
+Este catálogo não reproduz o grafo proprietário de dependências/remoção do
+NTLite. Nem todo item identificado é removível, e presença na imagem não implica
+que ele estará ativo. Scripts, downloads, escolhas do instalador e atualizações
+posteriores podem instalar conteúdo que não é determinável só por esta análise.
+As marcações não são um plano executável pelo DISM nem certificam remoção segura.
 Imagens SWM divididas ainda não são suportadas.
 
-Erros e falta de acesso aparecem em Avisos; inventários vazios não provam que a
-imagem não contém aqueles itens. No máximo os primeiros 1.000 avisos de varredura
-são retidos, e a contagem total/quantidade omitida são informadas.
+Abrir log mostra o diagnóstico local em %LOCALAPPDATA%/ISOInventory/Logs. A saída
+nativa é limitada a 16.000 caracteres por stream no log, sem cortar o inventário.
+Cancelamento aguarda operações nativas de montagem em andamento antes da limpeza.
 
-## Validação desta versão
-
-Testes portáteis cobrem o scanner real com diretórios e manifestos de teste,
-caminhos offline, associação de serviços, pastas de programas, XML não confiável,
-cancelamento, Unicode e parsing do inventário DISM. A entrada dos testes é
-conferida para confirmar que não foi alterada.
-
-O executável Windows é compilado e publicado a partir de Linux com targeting
-Windows. A interface, RegLoadAppKey e montagem/consultas nativas do DISM ainda
-precisam ser exercitadas em um Windows real. Não foi analisada a ISO 26300.9807
-neste ambiente. O executável não é assinado.
-
-A versão 0.1.1 corrige a inicialização sem STAThread, exigido pelos seletores
-nativos de arquivos/pastas. Erros lançados pelos seletores também passam a ser
-exibidos na janela. O build verifica o atributo no ponto de entrada compilado
-com VerifyAppStartup; isso não substitui o teste interativo em Windows.
-
-A versão 0.1.2 inicia a análise após carregar a origem, torna a escolha de edição
-explícita, fixa as alturas das linhas do cabeçalho para manter os controles visíveis
-e move a descoberta inicial para uma tarefa em segundo plano. O progresso fica
-visível no cabeçalho e no rodapé. Fechar durante uma operação solicita cancelamento
-e fecha a janela após a limpeza.
-
-Abrir log mostra o diagnóstico local em
-%LOCALAPPDATA%/ISOInventory/Logs. Ele registra a origem selecionada, etapas,
-comandos de inventário e erros; a saída dos comandos é limitada no log a
-16.000 caracteres por stream. Os dados de inventário continuam completos no
-relatório. A atualização do fluxo ainda precisa de teste interativo em Windows.
-
-## Compilar
-
-Requer SDK .NET 8 e acesso ao NuGet durante o build; não no uso do executável.
+## Desenvolvimento e validação
 
     dotnet test tools/iso-inventory/tests/Inventory.Tests/Inventory.Tests.csproj -c Release
     dotnet publish tools/iso-inventory/src/Inventory.App/Inventory.App.csproj -c Release -r win-x64 -o artifacts/iso-inventory
+    dotnet run --project tools/iso-inventory/tests/VerifyAppStartup -- tools/iso-inventory/src/Inventory.App/bin/Release/net8.0-windows/win-x64/ISOInventory.dll
 
-O publish gera um executável com runtime incluído e comprimido; bibliotecas
-nativas do runtime são extraídas automaticamente no TEMP do Windows ao iniciar.
-Os projetos não dependem do build do AME, de seus CABs ou de instalação do Atlas.
+Os testes portáteis cobrem dados reais de fixture, leitura sem alterar a entrada,
+resolução de caminhos, XML, inventários DISM, detecção de integrados, catálogo,
+WinSxS, versões e precedência de estados. O verificador inspeciona o STAThread
+no ponto de entrada compilado. A versão é cross-published em Linux para Windows;
+a árvore interativa e as consultas nativas precisam de confirmação em Windows.
+O executável é experimental e não assinado.

@@ -2,7 +2,7 @@ namespace Inventory.Core;
 
 public sealed class InventoryReport
 {
-    public int SchemaVersion { get; set; } = 1;
+    public int SchemaVersion { get; set; } = 2;
     public DateTime CreatedUtc { get; set; } = DateTime.UtcNow;
     public string Source { get; set; } = "";
     public string Edition { get; set; } = "";
@@ -12,6 +12,9 @@ public sealed class InventoryReport
     public List<ServiceItem> Services { get; set; } = new();
     public List<FileItem> Files { get; set; } = new();
     public List<ComponentItem> Components { get; set; } = new();
+    public List<CatalogItem> Catalog { get; set; } = new();
+    public string SelectionIntent { get; set; } = "Futura remoção (planejamento)";
+    public List<string> SelectedCatalogIds { get; set; } = new();
     public List<string> Warnings { get; set; } = new();
     public int WarningCount { get; set; }
     public string Limits { get; set; } = "Inventário somente de leitura. Vínculos por registro, manifesto ou pasta; não é um grafo completo de dependências do NTLite. Tamanhos são lógicos, não espaço recuperável.";
@@ -61,6 +64,16 @@ public sealed class ComponentItem
     public string Name { get; set; } = "";
     public string Kind { get; set; } = "";
     public string State { get; set; } = "";
+    public string Details { get; set; } = "";
+}
+
+public sealed class CatalogItem
+{
+    public string Id { get; set; } = "";
+    public string Category { get; set; } = "";
+    public string Name { get; set; } = "";
+    public string State { get; set; } = "";
+    public string Details { get; set; } = "";
 }
 
 public sealed class RegistrySnapshot

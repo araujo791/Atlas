@@ -184,9 +184,10 @@ public sealed class WindowsImageSession : IAsyncDisposable
     {
         var items = new List<ComponentItem>();
         foreach (var query in new[] {
-            ("/Get-Features", "Feature Name", "Recurso opcional"),
-            ("/Get-Capabilities", "Capability Identity", "Capability"),
-            ("/Get-Packages", "Package Identity", "Pacote CBS")
+            (new[] { "/Get-Features" }, "Feature Name", "Recursos opcionais"),
+            (new[] { "/Get-Capabilities" }, "Capability Identity", "Recursos sob demanda (Capabilities)"),
+            (new[] { "/Get-Packages" }, "Package Identity", "Pacote CBS"),
+            (new[] { "/Get-Drivers", "/All" }, "Published Name", "Pacote de driver")
         })
         {
             cancellation.ThrowIfCancellationRequested();
@@ -194,7 +195,7 @@ public sealed class WindowsImageSession : IAsyncDisposable
             try
             {
                 var entries = DismInventory.Components(
-                    await Dism("/Image:" + ImageRoot, query.Item1, "/Format:List"), query.Item2, query.Item3);
+                    await Dism(new[] { "/Image:" + ImageRoot }.Concat(query.Item1).Append("/Format:List").ToArray()), query.Item2, query.Item3);
                 items.AddRange(entries);
                 if (entries.Count == 0) CleanupWarnings.Add(query.Item3 + ": nenhum registro retornado; inventário pode estar vazio ou o formato não foi reconhecido.");
             }

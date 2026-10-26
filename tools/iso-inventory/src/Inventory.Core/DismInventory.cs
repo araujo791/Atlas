@@ -78,9 +78,16 @@ public static class DismInventory
             }
             else if (key.Equals("State", StringComparison.OrdinalIgnoreCase) && item is not null)
                 item.State = value;
+            else if (item is not null)
+                item.Details += key + ": " + value + "\r\n";
         }
         if (!text.Contains("The operation completed successfully.", StringComparison.Ordinal))
             throw new FormatException("Saída de inventário DISM incompleta.");
+        foreach (var record in result)
+        {
+            record.Details = "Origem: consulta DISM\r\n" + record.Details;
+            if (record.State.Length == 0) record.State = "Listado no inventário DISM";
+        }
         return result;
     }
 }

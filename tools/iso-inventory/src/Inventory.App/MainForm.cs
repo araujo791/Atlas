@@ -11,34 +11,29 @@ public sealed class MainForm : Form
     private readonly Button chooseFolder = new() { Text = "Pasta offline", AutoSize = true };
     private readonly Button analyze = new() { Text = "Analisar", AutoSize = true, Enabled = false };
     private readonly Button cancel = new() { Text = "Cancelar", AutoSize = true, Enabled = false };
-    private readonly Button export = new() { Text = "Salvar JSON completo", AutoSize = true, Enabled = false };
-    private readonly TextBox search = new() { Width = 390, PlaceholderText = "Filtrar a aba atual..." };
+    private readonly Button export = new() { Text = "Exportar seleção / JSON", AutoSize = true, Enabled = false };
+    private readonly TextBox search = new() { Width = 390, PlaceholderText = "Buscar componentes..." };
     private readonly Label status = new() { AutoSize = true, Text = "Escolha uma ISO ou uma pasta Windows offline." };
     private readonly Label count = new() { AutoSize = true };
     private readonly TabControl tabs = new() { Dock = DockStyle.Fill };
     private readonly TextBox warnings = new() { Dock = DockStyle.Fill, Multiline = true, ReadOnly = true, ScrollBars = ScrollBars.Both, WordWrap = false };
     private readonly System.Windows.Forms.Timer filterTimer = new() { Interval = 250 };
-    private readonly List<DataGridView> grids = new();
+    private readonly TreeView catalogTree = new() { Dock = DockStyle.Fill, CheckBoxes = true, HideSelection = false, ShowNodeToolTips = true };
+    private readonly TextBox details = new() { Dock = DockStyle.Fill, Multiline = true, ReadOnly = true, ScrollBars = ScrollBars.Both, WordWrap = false };
+    private readonly HashSet<string> selected = new(StringComparer.OrdinalIgnoreCase);
+    private bool updatingTree;
+    private sealed record CatalogGroup(string Name, IReadOnlyList<CatalogItem> Items);
     private CancellationTokenSource? cancellation;
     private InventoryReport? report;
     private bool busy;
-    private string? fileOwnerFilter;
     private readonly DiagnosticLog log = new();
     private readonly ProgressBar activity = new() { Width = 120, Height = 18, Style = ProgressBarStyle.Marquee, Visible = false };
     private readonly Label nextStep = new() { Dock = DockStyle.Fill, AutoEllipsis = true, Text = "Selecione a origem para iniciar. Imagens com várias edições abrem uma escolha de edição." };
     private bool closeRequested;
 
-    private sealed record AppRow(string Nome, string Tipo, string Versão, string Fabricante,
-        string Localização, int Arquivos, string TamanhoLógico, string Id, string Owner);
-    private sealed record ServiceRow(string Nome, string Descrição, string Tipo, string Início,
-        string Executável, string DLL, string Conta, string Dependências, string Owner);
-    private sealed record FileRow(string Caminho, bool Encontrado, string BytesLógicos,
-        bool Compartilhado, string VinculadoA, string Evidência);
-    private sealed record ComponentRow(string Nome, string Tipo, string Estado);
-
     public MainForm()
     {
-        Text = "ISO Inventory 0.1.2 — experimental • somente leitura";
+        Text = "ISO Inventory 0.2.0 — componentes da imagem";
         Width = 1280; Height = 820; MinimumSize = new(850, 550);
         StartPosition = FormStartPosition.CenterScreen;
         Font = new Font("Segoe UI", 9);
@@ -58,7 +53,7 @@ public sealed class MainForm : Form
         var clearFilter = new Button { Text = "Limpar filtro", AutoSize = true };
         clearFilter.Click += (_, _) =>
         {
-            fileOwnerFilter = null; search.PlaceholderText = "Filtrar a aba atual...";
+            search.PlaceholderText = "Buscar componentes...";
             search.Clear(); RefreshGrid();
         };
         var openLog = new Button { Text = "Abrir log", AutoSize = true };
@@ -71,25 +66,26 @@ public sealed class MainForm : Form
         third.Controls.Add(search); third.Controls.Add(clearFilter); third.Controls.Add(openLog); third.Controls.Add(count);
         header.Controls.Add(first, 0, 0); header.Controls.Add(second, 0, 1); header.Controls.Add(third, 0, 2);
         header.Controls.Add(nextStep, 0, 3);
-        foreach (var title in new[] { "Aplicativos", "Serviços e drivers", "Arquivos vinculados", "Componentes", "Avisos e limites" })
+        var catalogPage = new TabPage("Componentes da imagem");
+        var split = new SplitContainer { Dock = DockStyle.Fill, Width = 1050, SplitterDistance = 520 };
+        split.Panel1.Controls.Add(catalogTree); split.Panel2.Controls.Add(details);
+        catalogPage.Controls.Add(split); tabs.TabPages.Add(catalogPage);
+        var warningsPage = new TabPage("Avisos e limites"); warningsPage.Controls.Add(warnings); tabs.TabPages.Add(warningsPage);
+        catalogTree.BeforeExpand += (_, e) => { if (e.Node is not null) PopulateGroup(e.Node); };
+        catalogTree.AfterCheck += (_, e) => UpdateSelection(e.Node);
+        catalogTree.AfterSelect += (_, e) =>
         {
-            var page = new TabPage(title);
-            if (grids.Count < 4)
-            {
-                var grid = new DataGridView { Dock = DockStyle.Fill, ReadOnly = true,
-                    AllowUserToAddRows = false, AllowUserToDeleteRows = false,
-                    AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.DisplayedCells,
-                    SelectionMode = DataGridViewSelectionMode.FullRowSelect, MultiSelect = false,
-                    RowHeadersVisible = false, BackgroundColor = SystemColors.Window,
-                    ClipboardCopyMode = DataGridViewClipboardCopyMode.EnableAlwaysIncludeHeaderText };
-                grids.Add(grid); page.Controls.Add(grid);
-            }
-            else page.Controls.Add(warnings);
-            tabs.TabPages.Add(page);
-        }
+            if (e.Node?.Tag is CatalogItem item)
+                details.Text = item.Name + Environment.NewLine + item.Category + Environment.NewLine +
+                    "Estado: " + item.State + Environment.NewLine + Environment.NewLine + item.Details +
+                    Environment.NewLine + Environment.NewLine + "Marcação: planejamento de futura remoção.";
+            else if (e.Node?.Tag is CatalogGroup group)
+                details.Text = group.Name + Environment.NewLine + group.Items.Count +
+                    " itens. Expandir carrega a lista; marcar o grupo seleciona os itens deste grupo/filtro.";
+        };
         var footer = new FlowLayoutPanel { Dock = DockStyle.Bottom, Height = 54, Padding = new Padding(8), FlowDirection = FlowDirection.TopDown, WrapContents = false };
         footer.Controls.Add(status);
-        footer.Controls.Add(new Label { AutoSize = true, Text = "Somente leitura • Tamanhos lógicos não representam espaço removível • Duplo clique em um app/serviço para ver seus arquivos" });
+        footer.Controls.Add(new Label { AutoSize = true, Text = "Marque os itens para futura remoção e exporte a seleção. Estado e dependências aparecem nos detalhes." });
         Controls.Add(tabs); Controls.Add(header); Controls.Add(footer);
         chooseIso.Click += async (_, _) =>
         {
@@ -114,30 +110,16 @@ public sealed class MainForm : Form
         export.Click += (_, _) => Export();
         search.TextChanged += (_, _) => { filterTimer.Stop(); filterTimer.Start(); };
         filterTimer.Tick += (_, _) => { filterTimer.Stop(); RefreshGrid(); };
-        tabs.SelectedIndexChanged += (_, _) => RefreshGrid();
-        grids[0].CellDoubleClick += (_, e) =>
-        {
-            if (e.RowIndex >= 0 && grids[0].Rows[e.RowIndex].DataBoundItem is AppRow row) ShowOwner(row.Owner);
-        };
-        grids[1].CellDoubleClick += (_, e) =>
-        {
-            if (e.RowIndex >= 0 && grids[1].Rows[e.RowIndex].DataBoundItem is ServiceRow row) ShowOwner(row.Owner);
-        };
+        tabs.SelectedIndexChanged += (_, _) => { if (tabs.SelectedIndex == 0) RefreshGrid(); };
         FormClosing += (_, e) =>
         {
             if (busy) { e.Cancel = true; closeRequested = true; cancellation?.Cancel(); status.Text = "Encerrando após cancelar e desmontar; aguarde..."; }
         };
         FormClosed += (_, _) => { filterTimer.Dispose(); cancellation?.Dispose(); };
         WindowsImageSession.CommandLog = log.Write;
-        log.Write("ISO Inventory 0.1.2 iniciado; apartment=" + Thread.CurrentThread.GetApartmentState());
+        log.Write("ISO Inventory 0.2.0 iniciado; apartment=" + Thread.CurrentThread.GetApartmentState());
     }
 
-    private void ShowOwner(string owner)
-    {
-        fileOwnerFilter = owner; search.Clear();
-        search.PlaceholderText = "Arquivos de " + owner;
-        tabs.SelectedIndex = 2; RefreshGrid();
-    }
     private void SetBusy(bool value)
     {
         busy = value; chooseIso.Enabled = chooseFolder.Enabled = editions.Enabled = !value;
@@ -152,7 +134,7 @@ public sealed class MainForm : Form
     {
         log.Write("Origem selecionada: " + path);
         source.Text = path; editions.Items.Clear(); report = null;
-        foreach (var grid in grids) grid.DataSource = null;
+        selected.Clear(); catalogTree.Nodes.Clear(); details.Clear();
         cancellation?.Dispose(); cancellation = new();
         var token = cancellation.Token;
         warnings.Clear(); count.Text = ""; SetBusy(true);
@@ -221,9 +203,15 @@ public sealed class MainForm : Form
             var root = session.ImageRoot;
             progress.Report("Lendo cópias temporárias dos hives offline...");
             var registry = await Task.Run(() => OfflineRegistry.Read(root, token), token);
-            result = await Task.Run(() => ImageScanner.Scan(root, registry, token, progress), token);
+            result = await Task.Run(() =>
+            {
+                var inventory = ImageScanner.Scan(root, registry, token, progress, includeFileInventory: false);
+                progress.Report("Detectando componentes integrados, manifestos CBS e drivers...");
+                InventoryCatalog.AddImageComponents(root, inventory, token, progress);
+                return inventory;
+            }, token);
             result.Source = source.Text; result.Edition = edition.ToString();
-            result.Components = await session.ReadComponents(token, progress);
+            result.Components.AddRange(await session.ReadComponents(token, progress));
             foreach (var provisioned in await session.ReadProvisionedApps(token, progress))
             {
                 var physical = result.Applications.FirstOrDefault(app => app.Id.Equals(provisioned.Id, StringComparison.OrdinalIgnoreCase));
@@ -263,9 +251,11 @@ public sealed class MainForm : Form
                     string.Join(Environment.NewLine, report.Warnings);
                 if (report.WarningCount > report.Warnings.Count)
                     warnings.AppendText(Environment.NewLine + "Avisos omitidos: " + (report.WarningCount - report.Warnings.Count));
-                fileOwnerFilter = null; search.Clear(); RefreshGrid();
+                selected.Clear(); report.Catalog = InventoryCatalog.Build(report);
+                report.Limits = "Catálogo do conteúdo identificado na imagem. Marcar planeja futura remoção e salva a escolha no JSON. A presença não garante que o recurso esteja ativo ou seja removível. Instalações posteriores por scripts/downloads não são determinadas por completo.";
+                search.Clear(); if (finished) tabs.SelectedIndex = 0; RefreshGrid();
                 status.Text = (finished ? "Coleta finalizada: " : "Inventário parcial: ") +
-                    $"{report.Applications.Count} aplicativos, {report.Services.Count} serviços/drivers, {report.Files.Count} arquivos vinculados. Consulte os avisos.";
+                    $"{report.Applications.Count} aplicativos, {report.Services.Count} serviços/drivers, {report.Catalog.Count} itens no catálogo. Consulte os avisos.";
                 log.Write(status.Text);
             }
             else status.Text = token.IsCancellationRequested ? "Cancelado. Consulte os avisos de limpeza." : "Análise não concluída. Consulte os avisos.";
@@ -278,56 +268,104 @@ public sealed class MainForm : Form
     private void ShowError(Exception error)
     {
         log.Write(error.ToString());
-        warnings.Text = error.Message; tabs.SelectedIndex = 4;
+        warnings.Text = error.Message; tabs.SelectedIndex = 1;
         status.Text = "Não foi possível concluir a operação.";
         MessageBox.Show(this, error.Message.Length > 4000 ? error.Message[..4000] : error.Message,
             "Inventário não concluído", MessageBoxButtons.OK, MessageBoxIcon.Error);
     }
 
-    private static string FormatSize(long? bytes) => bytes is null ? "" :
-        bytes >= 1048576 ? (bytes.Value / 1048576.0).ToString("N2") + " MiB" : bytes.Value.ToString("N0") + " B";
-    private bool Match(params string[] text) => text.Any(value => value.Contains(search.Text, StringComparison.OrdinalIgnoreCase));
-
     private void RefreshGrid()
     {
-        if (report is null || tabs.SelectedIndex > 3) return;
-        var grid = grids[tabs.SelectedIndex];
-        int total;
-        switch (tabs.SelectedIndex)
+        if (report is null) return;
+        var query = search.Text;
+        var matches = report.Catalog.Where(item => query.Length == 0 ||
+            (item.Name + " " + item.Category + " " + item.State + " " + item.Details)
+                .Contains(query, StringComparison.OrdinalIgnoreCase)).ToList();
+        updatingTree = true;
+        catalogTree.BeginUpdate();
+        try
         {
-            case 0:
-                var apps = report.Applications.Where(a => Match(a.Name, a.Id, a.Kind, a.Publisher, a.Location)).ToList();
-                total = apps.Count;
-                grid.DataSource = apps.Take(5000).Select(a => new AppRow(a.Name, a.Kind, a.Version, a.Publisher,
-                    a.Location, a.FileCount, a.FileCount == 0 ? "" : FormatSize(a.LogicalBytes), a.Id,
-                    (a.Kind.StartsWith("Programa") ? "Programa: " + a.Name : "App: " + a.Name) + " [" + a.Id + "]")).ToList();
-                break;
-            case 1:
-                var services = report.Services.Where(s => Match(s.Name, s.DisplayName, s.Kind, s.ImagePath, s.ServiceDll, s.Start)).ToList();
-                total = services.Count;
-                grid.DataSource = services.Take(5000).Select(s => new ServiceRow(s.Name, s.DisplayName,
-                    s.Kind, s.Start, s.ImagePath, s.ServiceDll, s.Account, string.Join("; ", s.Dependencies), "Serviço: " + s.Name)).ToList();
-                break;
-            case 2:
-                var files = report.Files.Where(f => (fileOwnerFilter is null || f.Owners.Contains(fileOwnerFilter)) &&
-                    Match(f.Path, string.Join("; ", f.Owners), string.Join("; ", f.Evidence))).ToList();
-                total = files.Count;
-                grid.DataSource = files.Take(5000).Select(f => new FileRow(f.Path, f.Found, FormatSize(f.Bytes),
-                    f.Shared, string.Join("; ", f.Owners), string.Join("; ", f.Evidence))).ToList();
-                break;
-            default:
-                var components = report.Components.Where(c => Match(c.Name, c.Kind, c.State)).ToList();
-                total = components.Count;
-                grid.DataSource = components.Take(5000).Select(c => new ComponentRow(c.Name, c.Kind, c.State)).ToList();
-                break;
+            catalogTree.Nodes.Clear();
+            foreach (var group in matches.GroupBy(item => item.Category))
+                catalogTree.Nodes.Add(GroupNode(group.Key, group.ToList()));
+            foreach (TreeNode node in catalogTree.Nodes)
+                if (((CatalogGroup)node.Tag!).Name == "Componentes integrados") node.Expand();
         }
-        if (grid.Columns.Contains("Owner")) grid.Columns["Owner"].Visible = false;
-        count.Text = $"{total:N0} resultados" + (total > 5000 ? " • exibindo 5.000; refine o filtro ou salve o JSON completo" : "");
+        finally { catalogTree.EndUpdate(); updatingTree = false; }
+        UpdateCount(matches.Count);
+    }
+
+    private TreeNode GroupNode(string name, IReadOnlyList<CatalogItem> items)
+    {
+        var marked = items.Count(item => selected.Contains(item.Id));
+        var node = new TreeNode(name + " (" + items.Count + "; " + marked + " marcados)") {
+            Tag = new CatalogGroup(name, items), Checked = items.Count != 0 && marked == items.Count
+        };
+        node.Nodes.Add(new TreeNode("Expandir para listar..."));
+        return node;
+    }
+
+    private void PopulateGroup(TreeNode node)
+    {
+        if (node.Tag is not CatalogGroup group || node.Nodes.Count != 1 || node.Nodes[0].Tag is not null) return;
+        bool previous = updatingTree; updatingTree = true;
+        try
+        {
+            node.Nodes.Clear();
+            if (group.Items.Count > 250)
+            {
+                for (int offset = 0; offset < group.Items.Count; offset += 250)
+                    node.Nodes.Add(GroupNode("Itens " + (offset + 1) + "–" + Math.Min(offset + 250, group.Items.Count),
+                        group.Items.Skip(offset).Take(250).ToList()));
+            }
+            else foreach (var item in group.Items)
+                node.Nodes.Add(new TreeNode(item.Name + " — " + item.State) {
+                    Tag = item, Checked = selected.Contains(item.Id), ToolTipText = item.Id
+                });
+        }
+        finally { updatingTree = previous; }
+    }
+
+    private void UpdateSelection(TreeNode? node)
+    {
+        if (updatingTree || node is null) return;
+        if (node.Tag is CatalogItem item)
+        {
+            if (node.Checked) selected.Add(item.Id); else selected.Remove(item.Id);
+        }
+        else if (node.Tag is CatalogGroup group)
+            foreach (var entry in group.Items)
+                if (node.Checked) selected.Add(entry.Id); else selected.Remove(entry.Id);
+        else return;
+        updatingTree = true;
+        try
+        {
+            void Sync(TreeNode current)
+            {
+                if (current.Tag is CatalogItem entry) current.Checked = selected.Contains(entry.Id);
+                if (current.Tag is CatalogGroup entries)
+                {
+                    int marked = entries.Items.Count(entry => selected.Contains(entry.Id));
+                    current.Checked = marked == entries.Items.Count;
+                    current.Text = entries.Name + " (" + entries.Items.Count + "; " + marked + " marcados)";
+                }
+                foreach (TreeNode child in current.Nodes) Sync(child);
+            }
+            foreach (TreeNode root in catalogTree.Nodes) Sync(root);
+        }
+        finally { updatingTree = false; }
+        UpdateCount();
+    }
+
+    private void UpdateCount(int? matches = null)
+    {
+        count.Text = (matches is null ? "" : matches + " encontrados • ") + selected.Count + " selecionados para futura remoção";
     }
 
     private void Export()
     {
         if (report is null) return;
+        report.SelectedCatalogIds = selected.OrderBy(id => id, StringComparer.OrdinalIgnoreCase).ToList();
         using var dialog = new SaveFileDialog { Filter = "Inventário JSON|*.json", DefaultExt = "json",
             AddExtension = true, FileName = "inventario-windows.json", OverwritePrompt = true };
         if (dialog.ShowDialog(this) != DialogResult.OK) return;

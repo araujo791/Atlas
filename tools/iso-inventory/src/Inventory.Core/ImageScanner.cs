@@ -7,7 +7,7 @@ namespace Inventory.Core;
 public static class ImageScanner
 {
     public static InventoryReport Scan(string image, RegistrySnapshot snapshot,
-        CancellationToken cancellation, IProgress<string>? progress = null)
+        CancellationToken cancellation, IProgress<string>? progress = null, bool includeFileInventory = true)
     {
         var report = new InventoryReport { Source = image, Windows = new(snapshot.Windows),
             Applications = snapshot.Applications.Select(app => new AppItem {
@@ -41,7 +41,7 @@ public static class ImageScanner
         }
 
         progress?.Report("Lendo serviços e drivers...");
-        foreach (var service in report.Services)
+        foreach (var service in includeFileInventory ? report.Services : Enumerable.Empty<ServiceItem>())
         {
             cancellation.ThrowIfCancellationRequested();
             var owner = "Serviço: " + service.Name;
@@ -57,7 +57,7 @@ public static class ImageScanner
                 Add(fs.ResolveWindows(service.ServiceDll), owner, "Parameters/ServiceDll do registro offline");
         }
 
-        foreach (var app in report.Applications)
+        foreach (var app in includeFileInventory ? report.Applications : Enumerable.Empty<AppItem>())
         {
             cancellation.ThrowIfCancellationRequested();
             var owner = "Programa: " + app.Name + " [" + app.Id + "]";
@@ -131,7 +131,7 @@ public static class ImageScanner
                     };
                     progress?.Report("Inventariando " + app.Name + "...");
                     var owner = "App: " + app.Name + " [" + app.Id + "]";
-                    foreach (var file in fs.WalkFiles(package, cancellation))
+                    foreach (var file in includeFileInventory ? fs.WalkFiles(package, cancellation) : Enumerable.Empty<string>())
                     {
                         var resolved = new ResolvedImageFile(Path.GetRelativePath(fs.Root, file).Replace('/', '\\'),
                             file, "Arquivo contido na pasta do pacote; não é prova de dependência exclusiva.");
