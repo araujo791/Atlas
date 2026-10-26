@@ -21,6 +21,7 @@ jobs:
           dotnet-version: '8.0.x'
       - run: dotnet test tools/iso-inventory/tests/Inventory.Tests/Inventory.Tests.csproj -c Release
       - run: dotnet publish tools/iso-inventory/src/Inventory.App/Inventory.App.csproj -c Release -r win-x64 -o artifacts/iso-inventory
+      - run: dotnet run --project tools/iso-inventory/tests/VerifyAppStartup -- tools/iso-inventory/src/Inventory.App/bin/Release/net8.0-windows/win-x64/ISOInventory.dll
       - uses: actions/upload-artifact@v4
         with:
           name: ISOInventory-win-x64

@@ -34,7 +34,7 @@ public sealed class MainForm : Form
 
     public MainForm()
     {
-        Text = "ISO Inventory 0.1.0 — experimental • somente leitura";
+        Text = "ISO Inventory 0.1.1 — experimental • somente leitura";
         Width = 1280; Height = 820; MinimumSize = new(850, 550);
         StartPosition = FormStartPosition.CenterScreen;
         Font = new Font("Segoe UI", 9);
@@ -77,13 +77,21 @@ public sealed class MainForm : Form
         Controls.Add(tabs); Controls.Add(header); Controls.Add(footer);
         chooseIso.Click += async (_, _) =>
         {
-            using var dialog = new OpenFileDialog { Filter = "Imagens Windows|*.iso;*.wim;*.esd", CheckFileExists = true };
-            if (dialog.ShowDialog(this) == DialogResult.OK) await SelectSource(dialog.FileName);
+            try
+            {
+                using var dialog = new OpenFileDialog { Filter = "Imagens Windows|*.iso;*.wim;*.esd", CheckFileExists = true };
+                if (dialog.ShowDialog(this) == DialogResult.OK) await SelectSource(dialog.FileName);
+            }
+            catch (Exception error) { ShowError(error); }
         };
         chooseFolder.Click += async (_, _) =>
         {
-            using var dialog = new FolderBrowserDialog { Description = "Escolha a raiz da imagem (contendo a pasta Windows), ou a unidade da ISO montada." };
-            if (dialog.ShowDialog(this) == DialogResult.OK) await SelectSource(dialog.SelectedPath);
+            try
+            {
+                using var dialog = new FolderBrowserDialog { Description = "Escolha a raiz da imagem (contendo a pasta Windows), ou a unidade da ISO montada." };
+                if (dialog.ShowDialog(this) == DialogResult.OK) await SelectSource(dialog.SelectedPath);
+            }
+            catch (Exception error) { ShowError(error); }
         };
         analyze.Click += async (_, _) => await Analyze();
         cancel.Click += (_, _) => { cancellation?.Cancel(); status.Text = "Cancelando após a operação nativa em andamento; aguarde a desmontagem..."; };

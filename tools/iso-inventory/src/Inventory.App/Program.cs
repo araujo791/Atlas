@@ -1,3 +1,11 @@
-using Inventory.App;
-ApplicationConfiguration.Initialize();
-Application.Run(new MainForm());
+namespace Inventory.App;
+
+internal static class Program
+{
+    [STAThread]
+    private static void Main()
+    {
+        ApplicationConfiguration.Initialize();
+        Application.Run(new MainForm());
+    }
+}

@@ -6,7 +6,7 @@ pelo Windows para montar imagens e consultar os hives offline.
 
 ## Uso
 
-1. Abra ISOInventory-0.1.0-win-x64.exe.
+1. Abra ISOInventory-0.1.1-win-x64.exe.
 2. Selecione uma ISO, install.wim, install.esd ou uma pasta Windows offline.
 3. Escolha a edição e clique em Analisar.
 4. Consulte Aplicativos, Serviços e drivers, Arquivos vinculados, Componentes
@@ -75,6 +75,11 @@ O executável Windows é compilado e publicado a partir de Linux com targeting
 Windows. A interface, RegLoadAppKey e montagem/consultas nativas do DISM ainda
 precisam ser exercitadas em um Windows real. Não foi analisada a ISO 26300.9807
 neste ambiente. O executável não é assinado.
+
+A versão 0.1.1 corrige a inicialização sem STAThread, exigido pelos seletores
+nativos de arquivos/pastas. Erros lançados pelos seletores também passam a ser
+exibidos na janela. O build verifica o atributo no ponto de entrada compilado
+com VerifyAppStartup; isso não substitui o teste interativo em Windows.
 
 ## Compilar
 
