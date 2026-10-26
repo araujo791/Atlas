@@ -5,6 +5,13 @@ with build 26300 added to the allowlist and an experimental title. Existing
 26100/26200 entries, requirements, options and product verification are retained.
 It has not been compared with the uploaded v0.5.0-hotfix archive.
 
+The updated AppX rules include the user's requested Copilot provider, Widgets,
+Media Player and CrossDeviceExperienceHost removals. Formatting and PowerShell
+escaping from the uploaded YAML were corrected; existing deprovisioning and cache
+cleanup actions were retained. In the current AME core, AppX and PowerShell actions
+are not supported during offline ISO mastering. These rules run in Windows/OOBE;
+they do not establish that those packages were removed from the offline image.
+
 Rebuild from the repository root with Python 3 and the Info-ZIP `zip` command:
 
 ```sh

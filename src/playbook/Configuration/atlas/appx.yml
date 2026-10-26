@@ -1,6 +1,6 @@
 ---
 title: AppX
-description: Removes AppX packages and prevents them from being reinstalled
+description: Removes AppX packages and prevents them from being reinstalled (experimental 26300 rules)
 onUpgrade: false
 actions:
   - !writeStatus: {status: 'Removing AppX packages'}
@@ -31,8 +31,10 @@ actions:
   # New AppX Teams in 24H2
   - !taskKill: {name: 'ms-teams*', ignoreErrors: true}
   - !appx: {name: 'MSTeams*', type: family}
-  # 24H2 Copilot app
+  # Copilot and Web Experience packages, when present
   - !appx: {name: 'Microsoft.Copilot*', type: family}
+  - !appx: {name: 'Microsoft.Windows.Ai.Copilot.Provider*', type: family}
+  - !appx: {name: 'MicrosoftWindows.Client.WebExperience*', type: family} # Widgets
 
   # Other apps
   - !appx: {name: 'Clipchamp.Clipchamp*', type: family}
@@ -44,6 +46,7 @@ actions:
   - !appx: {name: 'Microsoft.MSPaint*', type: family} # Paint 3D
   - !appx: {name: 'Microsoft.Getstarted*', type: family} # Tips (deprecated)
   - !appx: {name: 'Microsoft.ZuneVideo*', type: family} # Films & TV
+  - !appx: {name: 'Microsoft.ZuneMusic*', type: family} # Media Player
   - !appx: {name: 'MicrosoftCorporationII.MicrosoftFamily*', type: family}
   - !appx: {name: 'Microsoft.MixedReality.Portal*', type: family}
   - !appx: {name: 'Microsoft.Windows.DevHome*', type: family}
@@ -68,12 +71,14 @@ actions:
   - !appx: {name: 'Microsoft.WindowsMaps*', type: family}
   - !appx: {name: 'Microsoft.WindowsSoundRecorder*', type: family}
   - !appx: {name: 'Ink.Handwriting.Main.Store.en-US1.0', type: family}
-  # Removing using AME Wizard causes issues with Cross Device Experience Host installing
+  # Use PowerShell for YourPhone and CrossDeviceExperienceHost on running Windows.
+  # AppX and PowerShell actions are not supported during offline ISO mastering.
   # - !appx: {name: 'Microsoft.YourPhone*', type: family}
   - !powerShell:
     command: |
-      Get-AppxPackage Microsoft.YourPhone* | Remove-AppxPackage
-      Get-AppxProvisionedPackage -Online | Where-Object { $_.DisplayName -eq 'Microsoft.YourPhone' } | Remove-AppxProvisionedPackage -Online
+      Get-AppxPackage Microsoft.YourPhone* | Remove-AppxPackage -ErrorAction SilentlyContinue
+      Get-AppxProvisionedPackage -Online | Where-Object { $_.DisplayName -eq 'Microsoft.YourPhone' } | Remove-AppxProvisionedPackage -Online -ErrorAction SilentlyContinue
+      Get-AppxPackage Microsoft.CrossDeviceExperienceHost* | Remove-AppxPackage -ErrorAction SilentlyContinue
     runas: currentUserElevated
     wait: true
 
