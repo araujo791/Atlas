@@ -1,6 +1,10 @@
 # MacOS
 .DS_Store
 
+# Python helper caches
+__pycache__/
+*.pyc
+
 # Playbooks
 *.apbx
 !/releases/*.apbx

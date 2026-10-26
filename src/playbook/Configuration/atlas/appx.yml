@@ -22,6 +22,9 @@ actions:
     runas: currentUserElevated
     wait: true
 
+  # Imported AppX removals run after the snapshot and before deprovisioning cleanup.
+  - !task: {path: 'atlas\ntlite-appx.yml'}
+
   # AppX Microsoft Teams
   # Seems legacy - not in 23H2
   - !taskKill: {name: 'msteams*', ignoreErrors: true}

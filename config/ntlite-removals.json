@@ -1,0 +1,326 @@
+{
+  "source_sha256": "9f1c3ca8eb8976b39738c94409c554d33c21d57c008a5d2059f06f679f4cd907",
+  "scope": "RemoveComponents only; no registry, unattended, commands or other preset settings imported",
+  "removals": [
+    {
+      "id": "accessibility_cursors",
+      "label": "Ponteiros do Mouse (Ferramentas de Acessibilidade)"
+    },
+    {
+      "id": "accessibility_magnifier",
+      "label": "Lupa"
+    },
+    {
+      "id": "accessibility_narrator",
+      "label": "Narrador"
+    },
+    {
+      "id": "asimov",
+      "label": "Cliente de Telemetria"
+    },
+    {
+      "id": "backup",
+      "label": "Backup e Restauração"
+    },
+    {
+      "id": "bingsearch",
+      "label": "Bing Search (InboxApp)"
+    },
+    {
+      "id": "calculator",
+      "label": "calculator"
+    },
+    {
+      "id": "charmap",
+      "label": "Mapa de Caracteres"
+    },
+    {
+      "id": "clouddownload",
+      "label": "Recuperação do Windows (WinRE) - Download da nuvem"
+    },
+    {
+      "id": "consentux",
+      "label": "Consentimento UX"
+    },
+    {
+      "id": "copilotpwa",
+      "label": "Windows Copilot (InboxApp)"
+    },
+    {
+      "id": "datacenterbridging",
+      "label": "Data Center Bridging (DCB)"
+    },
+    {
+      "id": "directml",
+      "label": "Aprendizado de Máquina Direto (DirectML)"
+    },
+    {
+      "id": "diskquota",
+      "label": "Cota do Disco"
+    },
+    {
+      "id": "diskquota32",
+      "label": "Cota do Disco - 32 bits"
+    },
+    {
+      "id": "driver_c_fdc.inf",
+      "label": "driver_c_fdc.inf"
+    },
+    {
+      "id": "driver_c_floppydisk.inf",
+      "label": "driver_c_floppydisk.inf"
+    },
+    {
+      "id": "driver_fdc.inf",
+      "label": "driver_fdc.inf"
+    },
+    {
+      "id": "driver_flpydisk.inf",
+      "label": "driver_flpydisk.inf"
+    },
+    {
+      "id": "driver_helloface.inf",
+      "label": "driver_helloface.inf"
+    },
+    {
+      "id": "easeofaccessthemes",
+      "label": "Temas de Facilidade de Acesso"
+    },
+    {
+      "id": "enterprisedataprotection",
+      "label": "Proteção de Dados Empresariais (EDP/WIP)"
+    },
+    {
+      "id": "errorreporting",
+      "label": "Relatório de Erros do Windows"
+    },
+    {
+      "id": "eudcedit",
+      "label": "Editor de Caracteres Particulares"
+    },
+    {
+      "id": "facerecognition",
+      "label": "Reconhecimento de Face"
+    },
+    {
+      "id": "flipgridpwa",
+      "label": "Flipgrid PWA (InboxApp)"
+    },
+    {
+      "id": "gameexplorer",
+      "label": "Explorador de Jogos"
+    },
+    {
+      "id": "guardedhost",
+      "label": "Anfitrião Vigiado"
+    },
+    {
+      "id": "hwsupport_floppy",
+      "label": "Disquete"
+    },
+    {
+      "id": "livecaptions",
+      "label": "Legendas ao vivo"
+    },
+    {
+      "id": "manifestbackup",
+      "label": "Backup de Manifest (WinSxS\\Backup)"
+    },
+    {
+      "id": "mapcontrol",
+      "label": "Controle de Mapa"
+    },
+    {
+      "id": "messagingsvc",
+      "label": "Serviço de Mensagens"
+    },
+    {
+      "id": "microsoft.asynctextservice",
+      "label": "AsyncTextService"
+    },
+    {
+      "id": "microsoft.bioenrollment",
+      "label": "Configuração do Windows Hello"
+    },
+    {
+      "id": "microsoft.ecapp",
+      "label": "Controle com os Olhos"
+    },
+    {
+      "id": "microsoft.sechealthui",
+      "label": "Windows Defender"
+    },
+    {
+      "id": "microsoft.services.store.engagement",
+      "label": "Microsoft Engagement Framework"
+    },
+    {
+      "id": "microsoft.windows.apprep.chxapp",
+      "label": "SmartScreen"
+    },
+    {
+      "id": "microsoft.windows.narratorquickstart",
+      "label": "Narrador"
+    },
+    {
+      "id": "microsoft.windows.parentalcontrols",
+      "label": "Microsoft Family Safety"
+    },
+    {
+      "id": "microsoft.windows.secureassessmentbrowser",
+      "label": "Fazer um Teste"
+    },
+    {
+      "id": "microsoft.xboxgamecallableui",
+      "label": "Xbox Game UI"
+    },
+    {
+      "id": "microsoftwindows.client.aix",
+      "label": "Windows Copilot (Pacote de Experiência de Recursos do Windows)"
+    },
+    {
+      "id": "mobilepc",
+      "label": "mobilepc"
+    },
+    {
+      "id": "mobilepc_networkprojection",
+      "label": "Projeção de Rede"
+    },
+    {
+      "id": "netqos",
+      "label": "Agendador de Pacotes Quality of Service (QoS)"
+    },
+    {
+      "id": "nettopology",
+      "label": "Protocolo de Descoberta de Topologia na Camada do Link (LLTD)"
+    },
+    {
+      "id": "outlookpwa",
+      "label": "Outlook PWA (InboxApp)"
+    },
+    {
+      "id": "payments",
+      "label": "Pagamentos"
+    },
+    {
+      "id": "penservice",
+      "label": "Serviço de Caneta"
+    },
+    {
+      "id": "proquota",
+      "label": "Cota do perfil"
+    },
+    {
+      "id": "retaildemo",
+      "label": "Conteúdo de Demonstração para Varejo"
+    },
+    {
+      "id": "rotationmanager",
+      "label": "Gerenciador de Rotação Automática"
+    },
+    {
+      "id": "securestartup",
+      "label": "Criptografia de Unidade BitLocker"
+    },
+    {
+      "id": "sleepstudy",
+      "label": "Estudo do Sono"
+    },
+    {
+      "id": "speechapi",
+      "label": "API de Fala"
+    },
+    {
+      "id": "speechcommon",
+      "label": "Reconhecimento de Fala"
+    },
+    {
+      "id": "speechtts",
+      "label": "Fala TTS"
+    },
+    {
+      "id": "spellchecking",
+      "label": "Verificação Ortográfica"
+    },
+    {
+      "id": "startexperiencesapp",
+      "label": "Start Experiences (InboxApp)"
+    },
+    {
+      "id": "stepsrecorder",
+      "label": "Gravador de Passos"
+    },
+    {
+      "id": "sustainabilityservice",
+      "label": "Serviço de Sustentabilidade"
+    },
+    {
+      "id": "systemreset",
+      "label": "Redefinir Sistema para Windows"
+    },
+    {
+      "id": "systemrestore",
+      "label": "Restauração do Sistema"
+    },
+    {
+      "id": "tabletpc",
+      "label": "Tablet PC"
+    },
+    {
+      "id": "textprediction",
+      "label": "Previsão de texto"
+    },
+    {
+      "id": "voiceaccess",
+      "label": "Acesso por voz"
+    },
+    {
+      "id": "vss",
+      "label": "Cópia de Sombra de Volume"
+    },
+    {
+      "id": "waasassessment",
+      "label": "Serviço médico do Windows Update"
+    },
+    {
+      "id": "wallet",
+      "label": "Serviço Wallet"
+    },
+    {
+      "id": "webcamexperience",
+      "label": "Experiência da Webcam"
+    },
+    {
+      "id": "webthreatdefense",
+      "label": "Serviço de Defesa contra Ameaças da Web"
+    },
+    {
+      "id": "widgetsplatformruntimeapp",
+      "label": "Widgets Platform Runtime (InboxApp)"
+    },
+    {
+      "id": "winai",
+      "label": "Aprendizado de Máquina do Windows AI"
+    },
+    {
+      "id": "windowstogo",
+      "label": "Windows To Go"
+    },
+    {
+      "id": "winre",
+      "label": "Recuperação do Windows (WinRE)"
+    },
+    {
+      "id": "winsat",
+      "label": "Ferramenta de Avaliação de Sistema do Windows (WinSAT)"
+    },
+    {
+      "id": "xbox",
+      "label": "Xbox - Núcleo"
+    },
+    {
+      "id": "zipfolder",
+      "label": "Pasta ZIP & CAB"
+    }
+  ]
+}

@@ -12,6 +12,12 @@ cleanup actions were retained. In the current AME core, AppX and PowerShell acti
 are not supported during offline ISO mastering. These rules run in Windows/OOBE;
 they do not establish that those packages were removed from the offline image.
 
+The NTLite preset's AppX subset is included in atlas/ntlite-appx.yml. Of its 80
+removal entries, 13 have newly mapped AppX actions, 3 already have AppX rules,
+and 64 native or unidentified components remain pending. See
+docs/ntlite-removals.md for the complete item-by-item mapping and limitations.
+These are Windows/OOBE actions. SecHealthUI actions respect defender-disable.
+
 Rebuild from the repository root with Python 3 and the Info-ZIP `zip` command:
 
 ```sh

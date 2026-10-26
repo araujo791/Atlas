@@ -1,0 +1,34 @@
+---
+title: NTLite AppX removals
+description: Experimental AppX subset of the NTLite preset; Windows/OOBE only
+onUpgrade: false
+iso: false
+actions:
+  - !writeStatus: {status: 'Applying imported NTLite AppX removals'}
+  # NTLite: calculator
+  - !appx: {name: 'Microsoft.WindowsCalculator*', type: family}
+  # NTLite: microsoft.asynctextservice
+  - !appx: {name: 'Microsoft.AsyncTextService*', type: family}
+  # NTLite: microsoft.bioenrollment
+  - !appx: {name: 'Microsoft.BioEnrollment*', type: family}
+  # NTLite: microsoft.ecapp
+  - !appx: {name: 'Microsoft.ECApp*', type: family}
+  # NTLite: microsoft.sechealthui
+  - !appx: {name: 'Microsoft.SecHealthUI*', type: family, option: 'defender-disable'}
+  - !appx: {name: 'Microsoft.Windows.SecHealthUI*', type: family, option: 'defender-disable'}
+  # NTLite: microsoft.services.store.engagement
+  - !appx: {name: 'Microsoft.Services.Store.Engagement*', type: family}
+  # NTLite: microsoft.windows.apprep.chxapp
+  - !appx: {name: 'Microsoft.Windows.Apprep.ChxApp*', type: family}
+  # NTLite: microsoft.windows.narratorquickstart
+  - !appx: {name: 'Microsoft.Windows.NarratorQuickStart*', type: family}
+  # NTLite: microsoft.windows.parentalcontrols
+  - !appx: {name: 'Microsoft.Windows.ParentalControls*', type: family}
+  # NTLite: microsoft.windows.secureassessmentbrowser
+  - !appx: {name: 'Microsoft.Windows.SecureAssessmentBrowser*', type: family}
+  # NTLite: microsoft.xboxgamecallableui
+  - !appx: {name: 'Microsoft.XboxGameCallableUI*', type: family}
+  # NTLite: microsoftwindows.client.aix
+  - !appx: {name: 'MicrosoftWindows.Client.AIX*', type: family}
+  # NTLite: widgetsplatformruntimeapp
+  - !appx: {name: 'Microsoft.WidgetsPlatformRuntime*', type: family}
