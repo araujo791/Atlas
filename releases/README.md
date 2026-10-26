@@ -1,36 +1,39 @@
-# Experimental Atlas playbook
+# Experimental Atlas playbooks
 
-`AtlasPlaybook_v0.5.0-26300-experimental.apbx` is built from this fork's source,
-with build 26300 added to the allowlist and an experimental title. Existing
-26100/26200 entries, requirements, options and product verification are retained.
-It has not been compared with the uploaded v0.5.0-hotfix archive.
+The latest source builds AtlasPlaybook_v0.5.0-26300-offline-experimental.apbx.
+It opts AppX family removals into offline processing and requires the patched
+trusted-uninstaller-cli core from branch codex/offline-appx-servicing.
+A new APBX alone cannot add offline servicing to an installed AME Wizard.
+No updated Windows executable is included here; native testing is pending.
 
-The updated AppX rules include the user's requested Copilot provider, Widgets,
-Media Player and CrossDeviceExperienceHost removals. Formatting and PowerShell
-escaping from the uploaded YAML were corrected; existing deprovisioning and cache
-cleanup actions were retained. In the current AME core, AppX and PowerShell actions
-are not supported during offline ISO mastering. These rules run in Windows/OOBE;
-they do not establish that those packages were removed from the offline image.
+The earlier AtlasPlaybook_v0.5.0-26300-experimental.apbx is retained unchanged
+as the previous Windows/OOBE artifact. It is not rebuilt by the current script.
+Neither artifact is a validated 26H2 compatibility release.
 
-The NTLite preset's AppX subset is included in atlas/ntlite-appx.yml. Of its 80
-removal entries, 13 have newly mapped AppX actions, 3 already have AppX rules,
-and 64 native or unidentified components remain pending. See
-docs/ntlite-removals.md for the complete item-by-item mapping and limitations.
-These are Windows/OOBE actions. SecHealthUI actions respect defender-disable.
+Both are based on this fork's 0.5.0 source, not the unavailable hotfix attachment.
+The 26100/26200/26300 allowlist, existing requirements, options and product
+verification are retained. The source and new artifact are labeled experimental.
 
-Rebuild from the repository root with Python 3 and the Info-ZIP `zip` command:
+The AppX rules include the user's requested Copilot provider, Widgets,
+Media Player and CrossDeviceExperienceHost actions. CrossDeviceExperienceHost
+uses PowerShell and remains Windows/OOBE only; offline provisioned AppX rules
+use the patched core's DISM phase. Native components and non-provisioned system
+apps are not made removable by an AppX pattern.
 
-```sh
-python3 scripts/build-26h2-playbook.py
-cd releases
-sha256sum -c AtlasPlaybook_v0.5.0-26300-experimental.apbx.sha256
-```
+Of the NTLite preset's 80 entries, 13 have mapped AppX actions, 3 have existing
+AppX rules, and 64 native/unknown component mappings remain pending.
+SecHealthUI rules respect defender-disable. See docs/ntlite-removals.md and
+docs/offline-appx.md for the per-item report and runtime requirements.
 
-The builder uses a ZIP archive with the public password `malte`, as documented
-for Atlas playbooks. It replaces the OEM version placeholder in a temporary
-copy, preserving the source files. It verifies all archive CRCs, encryption,
-file contents, file inventory and packaged XML configuration before saving.
+Build and verify the new preview from the repository root:
 
-This is an experimental test artifact, not a published or validated 26H2
-release. ISO processing, Windows execution and boot/install checks remain
-outstanding; see ../docs/26H2-validation.md.
+    python3 scripts/import-ntlite-removals.py
+    python3 scripts/build-26h2-playbook.py
+    cd releases
+    sha256sum -c AtlasPlaybook_v0.5.0-26300-offline-experimental.apbx.sha256
+
+The builder requires Python 3 and Info-ZIP. It uses the public APBX password
+malte, substitutes the OEM version in a temporary copy, and verifies every
+archive CRC, encrypted entry, file payload, inventory and packaged configuration.
+ISO processing, native DISM, measured size reduction and Windows boot/install
+validation are still outstanding. See docs/26H2-validation.md.

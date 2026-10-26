@@ -47,12 +47,13 @@ class NTLiteImportTests(unittest.TestCase):
         self.assertIn("Existing AppX rule", report)
         self.assertEqual(self.appx.read_text(), original)
 
-    def test_defender_choice_is_preserved_and_offline_is_disabled(self):
+    def test_defender_choice_is_preserved_and_offline_is_opted_in(self):
         actions, _ = self.run_import("microsoft.sechealthui")
         rules = [line for line in actions.splitlines() if "!appx:" in line]
         self.assertEqual(len(rules), 2)
         self.assertTrue(all("option: 'defender-disable'" in rule for rule in rules))
-        self.assertIn("iso: false", actions)
+        self.assertIn("iso: true", actions)
+        self.assertTrue(all("iso: true, oobe: true" in rule for rule in rules))
 
     def test_duplicate_ids_rejected_before_generation(self):
         with self.assertRaisesRegex(ValueError, "Duplicate"):

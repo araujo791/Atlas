@@ -11,8 +11,8 @@ New package patterns: 14.
 
 The executable subset is Configuration/atlas/ntlite-appx.yml, included
 inside the existing AppX task after its inventory snapshot and before
-deprovisioning cleanup. Both tasks run on Windows/OOBE, not during offline
-ISO mastering. Package identities and removability still require inventory
+deprovisioning cleanup. Offline AppX processing requires the patched AME core. Online/OOBE actions remain for
+packages not handled by provisioning. Package identities still require inventory
 and execution against build 26300.9807. A mapping does not prove removal.
 System apps may reject uninstallation; inspect all action logs.
 
@@ -21,7 +21,7 @@ recovery, backup and servicing. Native component removals remain pending;
 they are not replaced by file deletions or service disabling. SecHealthUI
 removal is conditional on the existing defender-disable choice.
 
-No full NTLite-equivalent conversion or offline image reduction is claimed.
+No full NTLite-equivalent conversion or measured image reduction is claimed.
 Regenerate with: python3 scripts/import-ntlite-removals.py
 
 | NTLite ID | Label | Status | Mapping / next step |
@@ -31,12 +31,12 @@ Regenerate with: python3 scripts/import-ntlite-removals.py
 | accessibility_narrator | Narrador | Pending: no verified component mapping | Requires image inventory and a component-specific implementation |
 | asimov | Cliente de Telemetria | Pending: no verified component mapping | Requires image inventory and a component-specific implementation |
 | backup | Backup e Restauração | Pending: no verified component mapping | Requires image inventory and a component-specific implementation |
-| bingsearch | Bing Search (InboxApp) | Existing AppX rule (Windows/OOBE; untested) | Microsoft.BingSearch* |
-| calculator | calculator | AppX actions added (Windows/OOBE; untested) | Microsoft.WindowsCalculator* |
+| bingsearch | Bing Search (InboxApp) | Existing AppX rule (offline with patched core; untested) | Microsoft.BingSearch* |
+| calculator | calculator | AppX actions added (offline with patched core; untested) | Microsoft.WindowsCalculator* |
 | charmap | Mapa de Caracteres | Pending: no verified component mapping | Requires image inventory and a component-specific implementation |
 | clouddownload | Recuperação do Windows (WinRE) - Download da nuvem | Pending: no verified component mapping | Requires image inventory and a component-specific implementation |
 | consentux | Consentimento UX | Pending: no verified component mapping | Requires image inventory and a component-specific implementation |
-| copilotpwa | Windows Copilot (InboxApp) | Existing AppX rule (Windows/OOBE; untested) | Microsoft.Copilot* |
+| copilotpwa | Windows Copilot (InboxApp) | Existing AppX rule (offline with patched core; untested) | Microsoft.Copilot* |
 | datacenterbridging | Data Center Bridging (DCB) | Pending: no verified component mapping | Requires image inventory and a component-specific implementation |
 | directml | Aprendizado de Máquina Direto (DirectML) | Pending: no verified component mapping | Requires image inventory and a component-specific implementation |
 | diskquota | Cota do Disco | Pending: no verified component mapping | Requires image inventory and a component-specific implementation |
@@ -59,22 +59,22 @@ Regenerate with: python3 scripts/import-ntlite-removals.py
 | manifestbackup | Backup de Manifest (WinSxS\Backup) | Pending: no verified component mapping | Requires image inventory and a component-specific implementation |
 | mapcontrol | Controle de Mapa | Pending: no verified component mapping | Requires image inventory and a component-specific implementation |
 | messagingsvc | Serviço de Mensagens | Pending: no verified component mapping | Requires image inventory and a component-specific implementation |
-| microsoft.asynctextservice | AsyncTextService | AppX actions added (Windows/OOBE; untested) | Microsoft.AsyncTextService* |
-| microsoft.bioenrollment | Configuração do Windows Hello | AppX actions added (Windows/OOBE; untested) | Microsoft.BioEnrollment* |
-| microsoft.ecapp | Controle com os Olhos | AppX actions added (Windows/OOBE; untested) | Microsoft.ECApp* |
-| microsoft.sechealthui | Windows Defender | AppX actions added (Windows/OOBE; untested) | Microsoft.SecHealthUI*, Microsoft.Windows.SecHealthUI*; only with the existing Disable Defender option |
-| microsoft.services.store.engagement | Microsoft Engagement Framework | AppX actions added (Windows/OOBE; untested) | Microsoft.Services.Store.Engagement* |
-| microsoft.windows.apprep.chxapp | SmartScreen | AppX actions added (Windows/OOBE; untested) | Microsoft.Windows.Apprep.ChxApp* |
-| microsoft.windows.narratorquickstart | Narrador | AppX actions added (Windows/OOBE; untested) | Microsoft.Windows.NarratorQuickStart* |
-| microsoft.windows.parentalcontrols | Microsoft Family Safety | AppX actions added (Windows/OOBE; untested) | Microsoft.Windows.ParentalControls* |
-| microsoft.windows.secureassessmentbrowser | Fazer um Teste | AppX actions added (Windows/OOBE; untested) | Microsoft.Windows.SecureAssessmentBrowser* |
-| microsoft.xboxgamecallableui | Xbox Game UI | AppX actions added (Windows/OOBE; untested) | Microsoft.XboxGameCallableUI* |
-| microsoftwindows.client.aix | Windows Copilot (Pacote de Experiência de Recursos do Windows) | AppX actions added (Windows/OOBE; untested) | MicrosoftWindows.Client.AIX* |
+| microsoft.asynctextservice | AsyncTextService | AppX actions added (offline with patched core; untested) | Microsoft.AsyncTextService* |
+| microsoft.bioenrollment | Configuração do Windows Hello | AppX actions added (offline with patched core; untested) | Microsoft.BioEnrollment* |
+| microsoft.ecapp | Controle com os Olhos | AppX actions added (offline with patched core; untested) | Microsoft.ECApp* |
+| microsoft.sechealthui | Windows Defender | AppX actions added (offline with patched core; untested) | Microsoft.SecHealthUI*, Microsoft.Windows.SecHealthUI*; only with the existing Disable Defender option |
+| microsoft.services.store.engagement | Microsoft Engagement Framework | AppX actions added (offline with patched core; untested) | Microsoft.Services.Store.Engagement* |
+| microsoft.windows.apprep.chxapp | SmartScreen | AppX actions added (offline with patched core; untested) | Microsoft.Windows.Apprep.ChxApp* |
+| microsoft.windows.narratorquickstart | Narrador | AppX actions added (offline with patched core; untested) | Microsoft.Windows.NarratorQuickStart* |
+| microsoft.windows.parentalcontrols | Microsoft Family Safety | AppX actions added (offline with patched core; untested) | Microsoft.Windows.ParentalControls* |
+| microsoft.windows.secureassessmentbrowser | Fazer um Teste | AppX actions added (offline with patched core; untested) | Microsoft.Windows.SecureAssessmentBrowser* |
+| microsoft.xboxgamecallableui | Xbox Game UI | AppX actions added (offline with patched core; untested) | Microsoft.XboxGameCallableUI* |
+| microsoftwindows.client.aix | Windows Copilot (Pacote de Experiência de Recursos do Windows) | AppX actions added (offline with patched core; untested) | MicrosoftWindows.Client.AIX* |
 | mobilepc | mobilepc | Pending: no verified component mapping | Requires image inventory and a component-specific implementation |
 | mobilepc_networkprojection | Projeção de Rede | Pending: no verified component mapping | Requires image inventory and a component-specific implementation |
 | netqos | Agendador de Pacotes Quality of Service (QoS) | Pending: no verified component mapping | Requires image inventory and a component-specific implementation |
 | nettopology | Protocolo de Descoberta de Topologia na Camada do Link (LLTD) | Pending: no verified component mapping | Requires image inventory and a component-specific implementation |
-| outlookpwa | Outlook PWA (InboxApp) | Existing AppX rule (Windows/OOBE; untested) | Microsoft.OutlookForWindows* |
+| outlookpwa | Outlook PWA (InboxApp) | Existing AppX rule (offline with patched core; untested) | Microsoft.OutlookForWindows* |
 | payments | Pagamentos | Pending: no verified component mapping | Requires image inventory and a component-specific implementation |
 | penservice | Serviço de Caneta | Pending: no verified component mapping | Requires image inventory and a component-specific implementation |
 | proquota | Cota do perfil | Pending: no verified component mapping | Requires image inventory and a component-specific implementation |
@@ -99,7 +99,7 @@ Regenerate with: python3 scripts/import-ntlite-removals.py
 | wallet | Serviço Wallet | Pending: no verified component mapping | Requires image inventory and a component-specific implementation |
 | webcamexperience | Experiência da Webcam | Pending: no verified component mapping | Requires image inventory and a component-specific implementation |
 | webthreatdefense | Serviço de Defesa contra Ameaças da Web | Pending: no verified component mapping | Requires image inventory and a component-specific implementation |
-| widgetsplatformruntimeapp | Widgets Platform Runtime (InboxApp) | AppX actions added (Windows/OOBE; untested) | Microsoft.WidgetsPlatformRuntime* |
+| widgetsplatformruntimeapp | Widgets Platform Runtime (InboxApp) | AppX actions added (offline with patched core; untested) | Microsoft.WidgetsPlatformRuntime* |
 | winai | Aprendizado de Máquina do Windows AI | Pending: no verified component mapping | Requires image inventory and a component-specific implementation |
 | windowstogo | Windows To Go | Pending: no verified component mapping | Requires image inventory and a component-specific implementation |
 | winre | Recuperação do Windows (WinRE) | Pending: no verified component mapping | Requires image inventory and a component-specific implementation |

@@ -21,7 +21,7 @@ def main():
     if not shutil.which("zip"):
         raise RuntimeError("Install the zip command before building")
 
-    output = root / "releases" / "AtlasPlaybook_v0.5.0-26300-experimental.apbx"
+    output = root / "releases" / "AtlasPlaybook_v0.5.0-26300-offline-experimental.apbx"
     output.parent.mkdir(exist_ok=True)
     with tempfile.TemporaryDirectory(prefix="atlas-apbx-") as temporary:
         temporary = Path(temporary)

@@ -75,7 +75,7 @@ actions:
   - !task: { path: 'atlas\start.yml' }
   - !task: { path: 'atlas\services.yml' }
   - !task: { path: 'atlas\components.yml' }
-  - !task: { path: 'atlas\appx.yml' }
+  - !task: { path: 'atlas\appx.yml', iso: true, oobe: true }
   - !task: { path: 'atlas\default.yml' }
   - !task: { path: 'atlas\revert.yml' }
   - !task: { path: "tweaks.yml" }

@@ -38,9 +38,9 @@ def main():
     lines = [
         "---",
         "title: NTLite AppX removals",
-        "description: Experimental AppX subset of the NTLite preset; Windows/OOBE only",
+        "description: Experimental AppX subset of the NTLite preset; offline provisioned AppX with patched core; Windows/OOBE fallback",
         "onUpgrade: false",
-        "iso: false",
+        "iso: true",
         "actions:",
         "  - !writeStatus: {status: 'Applying imported NTLite AppX removals'}",
     ]
@@ -58,17 +58,17 @@ def main():
             missing = [name for name in names if name not in existing]
             if missing:
                 mapped += 1
-                status = "AppX actions added (Windows/OOBE; untested)"
+                status = "AppX actions added (offline with patched core; untested)"
                 lines.append("  # NTLite: " + ident)
                 for name in missing:
                     if name in patterns:
                         continue
                     patterns.add(name)
                     option = ", option: 'defender-disable'" if ident == "microsoft.sechealthui" else ""
-                    lines.append("  - !appx: {name: '" + name + "', type: family" + option + "}")
+                    lines.append("  - !appx: {name: '" + name + "', type: family, iso: true, oobe: true" + option + "}")
             else:
                 covered += 1
-                status = "Existing AppX rule (Windows/OOBE; untested)"
+                status = "Existing AppX rule (offline with patched core; untested)"
             detail = ", ".join(names)
             if ident == "microsoft.sechealthui":
                 detail += "; only with the existing Disable Defender option"
@@ -91,8 +91,8 @@ def main():
         "",
         "The executable subset is Configuration/atlas/ntlite-appx.yml, included",
         "inside the existing AppX task after its inventory snapshot and before",
-        "deprovisioning cleanup. Both tasks run on Windows/OOBE, not during offline",
-        "ISO mastering. Package identities and removability still require inventory",
+        "deprovisioning cleanup. Offline AppX processing requires the patched AME core. Online/OOBE actions remain for",
+        "packages not handled by provisioning. Package identities still require inventory",
         "and execution against build 26300.9807. A mapping does not prove removal.",
         "System apps may reject uninstallation; inspect all action logs.",
         "",
@@ -101,7 +101,7 @@ def main():
         "they are not replaced by file deletions or service disabling. SecHealthUI",
         "removal is conditional on the existing defender-disable choice.",
         "",
-        "No full NTLite-equivalent conversion or offline image reduction is claimed.",
+        "No full NTLite-equivalent conversion or measured image reduction is claimed.",
         "Regenerate with: python3 scripts/import-ntlite-removals.py",
         "",
         "| NTLite ID | Label | Status | Mapping / next step |",

@@ -6,13 +6,15 @@ description mark the changes as experimental; this is not a validated release.
 
 Target image supplied by the user:
 `26300.9807.261013-1834.26H2_GE_RELEASE_SVC_PROD3_CLIENTMULTI_X64FRE_PT-BR`,
-created with UUP dump. The image has not yet been provided or inspected. Source
+created with UUP dump. A SharePoint link was provided, but the image has not yet
+been downloaded or inspected. Source
 version 0.5.0 in this repository has not been compared with the previously
 uploaded `AtlasPlaybook_v0.5.0-hotfix.apbx` archive.
 
 ## Build a test playbook with the checks retained
 
-For the experimental artifact retained in this repository, run from the root:
+The current source requires the patched core for offline AppX removal. See
+docs/offline-appx.md. To build the separate offline preview, run from the root:
 
 ```sh
 python3 scripts/build-26h2-playbook.py
