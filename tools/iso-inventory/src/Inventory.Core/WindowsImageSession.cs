@@ -9,6 +9,7 @@ namespace Inventory.Core;
 [SupportedOSPlatform("windows")]
 public sealed class WindowsImageSession : IAsyncDisposable
 {
+    public static Action<string>? CommandLog { get; set; }
     public string ImageRoot { get; private set; } = "";
     public List<string> CleanupWarnings { get; } = new();
     private string? workspace;
@@ -27,12 +28,14 @@ public sealed class WindowsImageSession : IAsyncDisposable
     private static async Task<CommandResult> Run(string executable, IEnumerable<string> args,
         Dictionary<string, string>? variables = null)
     {
+        var arguments = args.ToArray();
+        CommandLog?.Invoke("Iniciando " + executable + " " + string.Join(" ", arguments));
         var info = new ProcessStartInfo(executable)
         {
             UseShellExecute = false, CreateNoWindow = true,
             RedirectStandardOutput = true, RedirectStandardError = true
         };
-        foreach (var arg in args) info.ArgumentList.Add(arg);
+        foreach (var arg in arguments) info.ArgumentList.Add(arg);
         if (variables is not null)
             foreach (var (key, value) in variables) info.Environment[key] = value;
         using var process = Process.Start(info) ?? throw new IOException("Não foi possível iniciar " + executable);
@@ -41,7 +44,11 @@ public sealed class WindowsImageSession : IAsyncDisposable
         // Do not kill DISM mid-mount. Cancellation takes effect after the native
         // operation finishes, and the session can then discard its own mount.
         await process.WaitForExitAsync();
-        return new(process.ExitCode, await output, await error);
+        var result = new CommandResult(process.ExitCode, await output, await error);
+        CommandLog?.Invoke("Processo encerrado: " + process.ExitCode);
+        if (result.Output.Length != 0) CommandLog?.Invoke(result.Output[..Math.Min(result.Output.Length, 16000)]);
+        if (result.Error.Length != 0) CommandLog?.Invoke(result.Error[..Math.Min(result.Error.Length, 16000)]);
+        return result;
     }
 
     private static async Task<string> Dism(params string[] args)
@@ -110,12 +117,16 @@ public sealed class WindowsImageSession : IAsyncDisposable
         throw new FileNotFoundException("Não encontrei sources/install.wim ou install.esd. Imagens divididas em SWM ainda não são suportadas.");
     }
 
-    public static async Task<List<ImageEdition>> ListEditions(string input)
+    public static async Task<List<ImageEdition>> ListEditions(string input, CancellationToken cancellation = default)
     {
+        cancellation.ThrowIfCancellationRequested();
         await using var session = new WindowsImageSession();
         var source = await session.LocateImage(input);
+        cancellation.ThrowIfCancellationRequested();
         if (source.Length == 0) return new() { new(1, "Pasta Windows offline") };
-        return DismInventory.Editions(await Dism("/Get-WimInfo", "/WimFile:" + source));
+        var output = await Dism("/Get-WimInfo", "/WimFile:" + source);
+        cancellation.ThrowIfCancellationRequested();
+        return DismInventory.Editions(output);
     }
 
     public static async Task<WindowsImageSession> Open(string input, int index,
@@ -131,6 +142,7 @@ public sealed class WindowsImageSession : IAsyncDisposable
             cancellation.ThrowIfCancellationRequested();
             if (source.Length == 0) return session;
             var editions = DismInventory.Editions(await Dism("/Get-WimInfo", "/WimFile:" + source));
+            cancellation.ThrowIfCancellationRequested();
             if (!editions.Any(x => x.Index == index)) throw new IOException("Edição não encontrada na imagem.");
             session.workspace = Path.Combine(Path.GetTempPath(), "ISOInventory-" + Guid.NewGuid().ToString("N"));
             Directory.CreateDirectory(session.workspace);

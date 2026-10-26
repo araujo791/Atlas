@@ -23,6 +23,10 @@ public sealed class MainForm : Form
     private InventoryReport? report;
     private bool busy;
     private string? fileOwnerFilter;
+    private readonly DiagnosticLog log = new();
+    private readonly ProgressBar activity = new() { Width = 120, Height = 18, Style = ProgressBarStyle.Marquee, Visible = false };
+    private readonly Label nextStep = new() { Dock = DockStyle.Fill, AutoEllipsis = true, Text = "Selecione a origem para iniciar. Imagens com várias edições abrem uma escolha de edição." };
+    private bool closeRequested;
 
     private sealed record AppRow(string Nome, string Tipo, string Versão, string Fabricante,
         string Localização, int Arquivos, string TamanhoLógico, string Id, string Owner);
@@ -34,18 +38,22 @@ public sealed class MainForm : Form
 
     public MainForm()
     {
-        Text = "ISO Inventory 0.1.1 — experimental • somente leitura";
+        Text = "ISO Inventory 0.1.2 — experimental • somente leitura";
         Width = 1280; Height = 820; MinimumSize = new(850, 550);
         StartPosition = FormStartPosition.CenterScreen;
         Font = new Font("Segoe UI", 9);
-        var header = new TableLayoutPanel { Dock = DockStyle.Top, Height = 112, Padding = new Padding(8), ColumnCount = 1, RowCount = 3 };
+        var header = new TableLayoutPanel { Dock = DockStyle.Top, Height = 152, Padding = new Padding(8), ColumnCount = 1, RowCount = 4 };
+        header.RowStyles.Add(new RowStyle(SizeType.Absolute, 36));
+        header.RowStyles.Add(new RowStyle(SizeType.Absolute, 36));
+        header.RowStyles.Add(new RowStyle(SizeType.Absolute, 36));
+        header.RowStyles.Add(new RowStyle(SizeType.Absolute, 28));
         var first = new TableLayoutPanel { Dock = DockStyle.Fill, ColumnCount = 3 };
         first.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 100));
         first.ColumnStyles.Add(new ColumnStyle(SizeType.AutoSize));
         first.ColumnStyles.Add(new ColumnStyle(SizeType.AutoSize));
         first.Controls.Add(source); first.Controls.Add(chooseIso); first.Controls.Add(chooseFolder);
         var second = new FlowLayoutPanel { Dock = DockStyle.Fill, WrapContents = false };
-        second.Controls.AddRange(new Control[] { editions, analyze, cancel, export });
+        second.Controls.AddRange(new Control[] { editions, analyze, cancel, export, activity });
         var third = new FlowLayoutPanel { Dock = DockStyle.Fill, WrapContents = false };
         var clearFilter = new Button { Text = "Limpar filtro", AutoSize = true };
         clearFilter.Click += (_, _) =>
@@ -53,8 +61,16 @@ public sealed class MainForm : Form
             fileOwnerFilter = null; search.PlaceholderText = "Filtrar a aba atual...";
             search.Clear(); RefreshGrid();
         };
-        third.Controls.Add(search); third.Controls.Add(clearFilter); third.Controls.Add(count);
-        header.Controls.Add(first); header.Controls.Add(second); header.Controls.Add(third);
+        var openLog = new Button { Text = "Abrir log", AutoSize = true };
+        openLog.Click += (_, _) =>
+        {
+            log.Write("Log solicitado pela interface.");
+            try { System.Diagnostics.Process.Start(new System.Diagnostics.ProcessStartInfo(log.FilePath) { UseShellExecute = true }); }
+            catch (Exception error) { ShowError(error); }
+        };
+        third.Controls.Add(search); third.Controls.Add(clearFilter); third.Controls.Add(openLog); third.Controls.Add(count);
+        header.Controls.Add(first, 0, 0); header.Controls.Add(second, 0, 1); header.Controls.Add(third, 0, 2);
+        header.Controls.Add(nextStep, 0, 3);
         foreach (var title in new[] { "Aplicativos", "Serviços e drivers", "Arquivos vinculados", "Componentes", "Avisos e limites" })
         {
             var page = new TabPage(title);
@@ -109,9 +125,11 @@ public sealed class MainForm : Form
         };
         FormClosing += (_, e) =>
         {
-            if (busy) { e.Cancel = true; cancellation?.Cancel(); status.Text = "Aguarde a conclusão/cancelamento e a desmontagem antes de fechar."; }
+            if (busy) { e.Cancel = true; closeRequested = true; cancellation?.Cancel(); status.Text = "Encerrando após cancelar e desmontar; aguarde..."; }
         };
         FormClosed += (_, _) => { filterTimer.Dispose(); cancellation?.Dispose(); };
+        WindowsImageSession.CommandLog = log.Write;
+        log.Write("ISO Inventory 0.1.2 iniciado; apartment=" + Thread.CurrentThread.GetApartmentState());
     }
 
     private void ShowOwner(string owner)
@@ -126,24 +144,63 @@ public sealed class MainForm : Form
         analyze.Enabled = !value && editions.Items.Count != 0;
         export.Enabled = !value && report is not null;
         cancel.Enabled = value && cancellation is not null;
+        activity.Visible = value;
         UseWaitCursor = value;
     }
 
     private async Task SelectSource(string path)
     {
+        log.Write("Origem selecionada: " + path);
         source.Text = path; editions.Items.Clear(); report = null;
         foreach (var grid in grids) grid.DataSource = null;
+        cancellation?.Dispose(); cancellation = new();
+        var token = cancellation.Token;
         warnings.Clear(); count.Text = ""; SetBusy(true);
         status.Text = "Lendo edições (sem alterar a imagem)...";
+        nextStep.Text = "Carregando a origem... O progresso aparece no rodapé; use Cancelar se necessário.";
+        bool loaded = false;
         try
         {
-            var list = await WindowsImageSession.ListEditions(path);
+            var list = await Task.Run(() => WindowsImageSession.ListEditions(path, token), token);
+            token.ThrowIfCancellationRequested();
             editions.Items.AddRange(list.Cast<object>().ToArray());
             editions.SelectedIndex = 0;
-            status.Text = "Selecione a edição e clique em Analisar.";
+            loaded = true;
+            log.Write("Origem carregada: " + list.Count + " edição(ões).");
+            status.Text = "Origem carregada: " + list.Count + " edição(ões).";
         }
+        catch (OperationCanceledException) { status.Text = "Carregamento cancelado."; log.Write("Carregamento cancelado."); }
         catch (Exception e) { ShowError(e); }
-        finally { SetBusy(false); }
+        finally
+        {
+            cancellation.Dispose(); cancellation = null; SetBusy(false);
+        }
+        if (closeRequested) { Close(); return; }
+        if (!loaded) { nextStep.Text = "Não foi possível carregar a origem. Consulte Avisos ou Abrir log."; return; }
+        if (editions.Items.Count > 1 && !ChooseEdition())
+        {
+            nextStep.Text = "Origem carregada. Selecione a edição na lista e clique em Analisar.";
+            analyze.Focus();
+            return;
+        }
+        nextStep.Text = "Iniciando a análise da edição selecionada...";
+        await Analyze();
+    }
+
+    private bool ChooseEdition()
+    {
+        using var dialog = new Form { Text = "Escolha a edição para analisar", Width = 640, Height = 200,
+            StartPosition = FormStartPosition.CenterParent, FormBorderStyle = FormBorderStyle.FixedDialog,
+            MinimizeBox = false, MaximizeBox = false, Padding = new Padding(12) };
+        var label = new Label { Dock = DockStyle.Top, Height = 30, Text = "A imagem contém várias edições. Escolha uma para iniciar o inventário." };
+        var options = new ComboBox { Dock = DockStyle.Top, DropDownStyle = ComboBoxStyle.DropDownList };
+        options.Items.AddRange(editions.Items.Cast<object>().ToArray()); options.SelectedIndex = 0;
+        var start = new Button { Dock = DockStyle.Bottom, Height = 34, Text = "Iniciar análise", DialogResult = DialogResult.OK };
+        dialog.Controls.Add(options); dialog.Controls.Add(label); dialog.Controls.Add(start);
+        dialog.AcceptButton = start;
+        if (dialog.ShowDialog(this) != DialogResult.OK) return false;
+        editions.SelectedIndex = options.SelectedIndex;
+        return true;
     }
 
     private async Task Analyze()
@@ -151,14 +208,16 @@ public sealed class MainForm : Form
         if (editions.SelectedItem is not ImageEdition edition) return;
         cancellation?.Dispose(); cancellation = new();
         var token = cancellation.Token;
-        IProgress<string> progress = new Progress<string>(message => status.Text = message);
+        IProgress<string> progress = new Progress<string>(message => { status.Text = message; nextStep.Text = message; log.Write(message); });
         InventoryReport? result = null;
         bool finished = false;
         WindowsImageSession? session = null;
         report = null; SetBusy(true);
+        log.Write("Análise iniciada: " + edition);
         try
         {
-            session = await WindowsImageSession.Open(source.Text, edition.Index, token, progress);
+            var input = source.Text;
+            session = await Task.Run(() => WindowsImageSession.Open(input, edition.Index, token, progress), token);
             var root = session.ImageRoot;
             progress.Report("Lendo cópias temporárias dos hives offline...");
             var registry = await Task.Run(() => OfflineRegistry.Read(root, token), token);
@@ -207,14 +266,18 @@ public sealed class MainForm : Form
                 fileOwnerFilter = null; search.Clear(); RefreshGrid();
                 status.Text = (finished ? "Coleta finalizada: " : "Inventário parcial: ") +
                     $"{report.Applications.Count} aplicativos, {report.Services.Count} serviços/drivers, {report.Files.Count} arquivos vinculados. Consulte os avisos.";
+                log.Write(status.Text);
             }
             else status.Text = token.IsCancellationRequested ? "Cancelado. Consulte os avisos de limpeza." : "Análise não concluída. Consulte os avisos.";
             cancellation.Dispose(); cancellation = null; SetBusy(false);
+            nextStep.Text = status.Text;
+            if (closeRequested) Close();
         }
     }
 
     private void ShowError(Exception error)
     {
+        log.Write(error.ToString());
         warnings.Text = error.Message; tabs.SelectedIndex = 4;
         status.Text = "Não foi possível concluir a operação.";
         MessageBox.Show(this, error.Message.Length > 4000 ? error.Message[..4000] : error.Message,

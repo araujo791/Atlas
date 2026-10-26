@@ -6,9 +6,11 @@ pelo Windows para montar imagens e consultar os hives offline.
 
 ## Uso
 
-1. Abra ISOInventory-0.1.1-win-x64.exe.
+1. Abra ISOInventory-0.1.2-win-x64.exe.
 2. Selecione uma ISO, install.wim, install.esd ou uma pasta Windows offline.
-3. Escolha a edição e clique em Analisar.
+3. Pasta offline ou imagem com uma edição inicia a análise automaticamente.
+   Quando houver várias edições, escolha uma na janela e clique em Iniciar análise.
+   O botão Analisar permite repetir a análise da edição selecionada.
 4. Consulte Aplicativos, Serviços e drivers, Arquivos vinculados, Componentes
    e Avisos e limites. Use a busca para filtrar a aba atual.
 5. Dê duplo clique em um aplicativo/serviço para ver os arquivos associados.
@@ -80,6 +82,18 @@ A versão 0.1.1 corrige a inicialização sem STAThread, exigido pelos seletores
 nativos de arquivos/pastas. Erros lançados pelos seletores também passam a ser
 exibidos na janela. O build verifica o atributo no ponto de entrada compilado
 com VerifyAppStartup; isso não substitui o teste interativo em Windows.
+
+A versão 0.1.2 inicia a análise após carregar a origem, torna a escolha de edição
+explícita, fixa as alturas das linhas do cabeçalho para manter os controles visíveis
+e move a descoberta inicial para uma tarefa em segundo plano. O progresso fica
+visível no cabeçalho e no rodapé. Fechar durante uma operação solicita cancelamento
+e fecha a janela após a limpeza.
+
+Abrir log mostra o diagnóstico local em
+%LOCALAPPDATA%/ISOInventory/Logs. Ele registra a origem selecionada, etapas,
+comandos de inventário e erros; a saída dos comandos é limitada no log a
+16.000 caracteres por stream. Os dados de inventário continuam completos no
+relatório. A atualização do fluxo ainda precisa de teste interativo em Windows.
 
 ## Compilar
 
